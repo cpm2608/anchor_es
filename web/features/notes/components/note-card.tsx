@@ -35,24 +35,24 @@ interface NoteCardProps {
 
 const ROW_LIMIT: Record<CardLayout, number> = { list: 2, grid: 4, masonry: 6 };
 
-const dayFormat = new Intl.DateTimeFormat(undefined, {
+const dayFormat = new Intl.DateTimeFormat("es", {
   month: "short",
   day: "numeric",
 });
-const dayAndYearFormat = new Intl.DateTimeFormat(undefined, {
+const dayAndYearFormat = new Intl.DateTimeFormat("es", {
   month: "short",
   day: "numeric",
   year: "numeric",
 });
 
-/** “Today”, “Yesterday”, “Sep 22”, or “Sep 22, 2025” in another year. */
+/** “Hoy”, “Ayer”, “22 sep” */
 export function formatCardDate(iso: string, now = new Date()): string {
   const date = new Date(iso);
   const startOfDay = (d: Date) =>
     new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
   const daysAgo = Math.round((startOfDay(now) - startOfDay(date)) / 86400000);
-  if (daysAgo === 0) return "Today";
-  if (daysAgo === 1) return "Yesterday";
+  if (daysAgo === 0) return "Hoy";
+  if (daysAgo === 1) return "Ayer";
   return (
     date.getFullYear() === now.getFullYear() ? dayFormat : dayAndYearFormat
   ).format(date);

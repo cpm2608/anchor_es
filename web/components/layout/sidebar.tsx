@@ -23,6 +23,7 @@ import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useTheme } from "next-themes";
 import * as React from "react";
+import { useTranslation } from "@/lib/i18n";
 import { Avatar } from "@/components/ui/avatar";
 import { IconButton } from "@/components/ui/button";
 import { ConfirmationDialog } from "@/components/ui/confirmation-dialog";
@@ -67,9 +68,9 @@ interface SidebarProps {
 }
 
 const PAGES = [
-  { href: "/notes", label: "Notes", icon: NotebookPen },
-  { href: "/archive", label: "Archive", icon: Archive },
-  { href: "/trash", label: "Trash", icon: Trash2 },
+  { href: "/notes", key: "sidebar.notes", defaultLabel: "Notes", icon: NotebookPen },
+  { href: "/archive", key: "sidebar.archive", defaultLabel: "Archive", icon: Archive },
+  { href: "/trash", key: "sidebar.trash", defaultLabel: "Trash", icon: Trash2 },
 ] as const;
 
 export function newNoteHref(pathname: string, tagId?: string | null) {
@@ -153,6 +154,7 @@ export function Sidebar({
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const router = useRouter();
+  const { t } = useTranslation();
   const { user, logout } = useAuth();
   const queryClient = useQueryClient();
   const online = useSyncStatus((s) => s.online);
@@ -315,7 +317,7 @@ export function Sidebar({
         />
       </div>
 
-      <Tip label="New note (N)" side="right" isDisabled={!isNarrow} isFocusOnly>
+      <Tip label={`${t("sidebar.newNote")} (N)`} side="right" isDisabled={!isNarrow} isFocusOnly>
         <Link
           href={newNoteHref(pathname, tagId)}
           onClick={(e) => {
@@ -329,7 +331,7 @@ export function Sidebar({
           className="mb-3 flex h-9.5 items-center gap-2 overflow-hidden whitespace-nowrap rounded-md bg-foreground pr-2.5 pl-[11.5px] font-semibold text-card text-ui no-underline shadow-control transition-[background-color,transform] duration-(--duration-hover) hover:bg-[color-mix(in_srgb,var(--foreground)_88%,var(--card))] active:scale-[.98] [&>svg]:size-4.25 [&>svg]:shrink-0"
         >
           <Plus aria-hidden />
-          <span className={labelClass}>New note</span>
+          <span className={labelClass}>{t("sidebar.newNote")}</span>
           {!drawer && (
             <kbd
               aria-hidden
@@ -342,37 +344,40 @@ export function Sidebar({
       </Tip>
 
       <nav aria-label="Pages" className="grid gap-px">
-        {PAGES.map(({ href, label: name, icon: Icon }) => (
-          <Tip
-            key={href}
-            label={name}
-            side="right"
-            isDisabled={!isNarrow}
-            isFocusOnly
-          >
-            <Link
-              href={href}
-              onClick={onNavigate}
-              data-row={href}
-              aria-current={currentRow === href ? "page" : undefined}
-              className={rowClass}
+        {PAGES.map(({ href, key, defaultLabel, icon: Icon }) => {
+          const name = t(key) || defaultLabel;
+          return (
+            <Tip
+              key={href}
+              label={name}
+              side="right"
+              isDisabled={!isNarrow}
+              isFocusOnly
             >
-              <Icon aria-hidden />
-              <span className={labelClass}>{name}</span>
-            </Link>
-          </Tip>
-        ))}
+              <Link
+                href={href}
+                onClick={onNavigate}
+                data-row={href}
+                aria-current={currentRow === href ? "page" : undefined}
+                className={rowClass}
+              >
+                <Icon aria-hidden />
+                <span className={labelClass}>{name}</span>
+              </Link>
+            </Tip>
+          );
+        })}
       </nav>
 
       <div className="relative mt-3.5 flex h-7.5 items-center gap-1.5 whitespace-nowrap pr-0.5 pl-[11.5px] text-label text-muted-foreground uppercase">
         <span aria-hidden className={cn("flex-1", hideClass)}>
-          Tags
+          {t("sidebar.tags")}
         </span>
         <span className={hideClass}>
-          <Tip label="New tag">
+          <Tip label={t("sidebar.newTag")}>
             <IconButton
               size="sm"
-              label="New tag"
+              label={t("sidebar.newTag")}
               onClick={() => setTagDialog({ tag: null })}
             >
               <Plus />
@@ -412,7 +417,7 @@ export function Sidebar({
         )}
         {tagsLoaded && sortedTags.length === 0 && (
           <p className="m-0 py-1 pr-2.5 pl-[11.5px] text-muted-foreground text-small group-data-narrow/sb:hidden">
-            No tags yet
+            {t("sidebar.noTagsYet")}
           </p>
         )}
         {sortedTags.map((tag) => {
@@ -491,9 +496,9 @@ export function Sidebar({
                       }}
                     >
                       <Pencil />
-                      Rename
+                      {t("sidebar.rename")}
                     </DropdownMenuItem>
-                    <DropdownMenuLabel aria-hidden>Color</DropdownMenuLabel>
+                    <DropdownMenuLabel aria-hidden>{t("sidebar.color")}</DropdownMenuLabel>
                     <MenuPrimitive.RadioGroup
                       value={tag.color?.toUpperCase()}
                       onValueChange={(color) =>
@@ -522,7 +527,7 @@ export function Sidebar({
                       }}
                     >
                       <Trash2 />
-                      Delete tag
+                      {t("sidebar.deleteTag")}
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
@@ -578,7 +583,7 @@ export function Sidebar({
                     isPeeking ? "opacity-0" : "opacity-100",
                   )}
                 >
-                  Collapse
+                  {t("sidebar.collapse")}
                 </span>
                 <span
                   className={cn(
@@ -586,7 +591,7 @@ export function Sidebar({
                     isPeeking ? "opacity-100" : "opacity-0",
                   )}
                 >
-                  Keep open
+                  {t("sidebar.keepOpen")}
                 </span>
               </span>
               <kbd
@@ -655,6 +660,7 @@ function AccountMenu({
   onClose: () => void;
 }) {
   const router = useRouter();
+  const { t } = useTranslation();
   const { theme = "system", setTheme } = useTheme();
   const [isOpen, setIsOpen] = React.useState(false);
   // Kept while the menu closes: the sidebar can narrow under it.
@@ -714,12 +720,12 @@ function AccountMenu({
         <DropdownMenuSeparator />
         <DropdownMenuItem onSelect={() => goTo("/settings")}>
           <Settings />
-          Settings
+          {t("sidebar.settings")}
         </DropdownMenuItem>
         {user.isAdmin && (
           <DropdownMenuItem onSelect={() => goTo("/admin")}>
             <ShieldCheck />
-            Admin
+            {t("sidebar.admin")}
           </DropdownMenuItem>
         )}
         <ThemeChoices
@@ -729,7 +735,7 @@ function AccountMenu({
         <DropdownMenuSeparator />
         <DropdownMenuItem tone="danger" onSelect={onSignOut}>
           <LogOut />
-          Sign out
+          {t("auth.signOut")}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

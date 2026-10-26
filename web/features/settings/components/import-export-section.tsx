@@ -9,22 +9,22 @@ import { Row, RowText, Section } from "./settings-blocks";
 export function ImportExportSection() {
   const [importing, setImporting] = React.useState(false);
   return (
-    <Section id="data" title="Import and export">
+    <Section id="data" title="Importar y exportar">
       <Row>
         <RowText
-          title="Export"
-          text="Download all your notes as a backup, or to move them to another app."
+          title="Exportar"
+          text="Descarga todas tus notas como copia de seguridad o para moverlas a otra aplicación."
         />
         <ExportMenu />
       </Row>
       <Row>
         <RowText
-          title="Import"
-          text="Import from an Anchor backup, Google Keep, or Markdown files from Obsidian and Nextcloud Notes."
+          title="Importar"
+          text="Importa desde una copia de seguridad de Anchor, Google Keep, o archivos Markdown de Obsidian y Nextcloud Notes."
         />
         <Button variant="secondary" onClick={() => setImporting(true)}>
           <Upload aria-hidden />
-          Import
+          Importar
         </Button>
       </Row>
       <ImportDialog open={importing} onOpenChange={setImporting} />

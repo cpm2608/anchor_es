@@ -66,20 +66,20 @@ export function PasswordSection() {
   }
 
   return (
-    <Section id="password" title="Password">
+    <Section id="password" title="Contraseña">
       <Row className="block">
         <form
           className="grid gap-3.5"
           onSubmit={(e) => {
             e.preventDefault();
             if (newPassword.length < 8)
-              return setNewPasswordError("Use at least 8 characters.");
+              return setNewPasswordError("Usa al menos 8 caracteres.");
             setFormError(null);
             passwordChange.mutate({ currentPassword, newPassword });
           }}
         >
           <div className="grid grid-cols-2 items-start gap-3.5 max-md:grid-cols-1">
-            <Field label="Current password" error={currentPasswordError}>
+            <Field label="Contraseña actual" error={currentPasswordError}>
               <PasswordInput
                 value={currentPassword}
                 autoComplete="current-password"
@@ -90,8 +90,8 @@ export function PasswordSection() {
               />
             </Field>
             <Field
-              label="New password"
-              help="At least 8 characters."
+              label="Nueva contraseña"
+              help="Al menos 8 caracteres."
               error={newPasswordError}
             >
               <PasswordInput
@@ -109,9 +109,9 @@ export function PasswordSection() {
             <Button
               type="submit"
               disabled={!currentPassword || newPassword.length < 8}
-              busy={passwordChange.isPending && "Changing password…"}
+              busy={passwordChange.isPending && "Cambiando contraseña…"}
             >
-              Change password
+              Cambiar contraseña
             </Button>
           </div>
         </form>

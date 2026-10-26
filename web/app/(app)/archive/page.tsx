@@ -145,29 +145,29 @@ export default function ArchivePage() {
           <PageTitle
             count={isLoading || loadFailed ? undefined : list.visible.length}
           >
-            Archive
+            Archivo
           </PageTitle>
         }
         actions={
           hasNotes && (
-            <NoteListActions list={list} placeholder="Search archive" />
+            <NoteListActions list={list} placeholder="Buscar en archivo" />
           )
         }
       >
         <p className="m-0 -mt-2 mb-1 text-muted-foreground text-ui">
-          Archived notes are hidden from your notes list.
+          Las notas archivadas están ocultas de tu lista principal.
         </p>
         <NotesBoardSkeleton loading={isLoading} />
         {loadFailed && (
           <LoadFailedState
-            title="Couldn’t load your archive"
+            title="No se pudo cargar el archivo"
             onRetry={() => refetch()}
             isRetrying={isFetching}
           />
         )}
         {!isLoading && !loadFailed && !hasNotes && (
-          <EmptyState illustration="archive" title="No archived notes">
-            Archive notes you want to keep but don’t need to see every day.
+          <EmptyState illustration="archive" title="No hay notas archivadas">
+            Archiva notas que quieras conservar pero que no necesites ver todos los días.
           </EmptyState>
         )}
         {hasNotes && !list.visible.length && <NoSearchResults list={list} />}
@@ -194,7 +194,7 @@ export default function ArchivePage() {
         actions={[
           {
             key: "unarchive",
-            label: "Unarchive",
+            label: "Desarchivar",
             icon: <ArchiveRestore aria-hidden />,
             onClick: () =>
               noteAction.mutate({
@@ -204,7 +204,7 @@ export default function ArchivePage() {
           },
           {
             key: "delete",
-            label: "Delete",
+            label: "Eliminar",
             icon: <Trash2 aria-hidden />,
             onClick: deleteChosen,
           },

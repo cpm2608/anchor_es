@@ -19,10 +19,10 @@ export function EditorSection() {
         <RowText
           title={
             <label htmlFor="sort-checked">
-              Move checked items to the bottom
+              Mover elementos completados al final
             </label>
           }
-          text="Checked items move below the unchecked ones."
+          text="Los elementos marcados se mueven automáticamente debajo de los no marcados."
           saved={<SaveStatus state={saveStatus} />}
         />
         <Switch

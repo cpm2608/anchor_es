@@ -140,8 +140,8 @@ export function ProfileSection() {
   return (
     <Section
       id="profile"
-      title="Profile"
-      description="How you appear to people you share notes with."
+      title="Perfil"
+      description="Cómo te ven las personas con las que compartes notas."
     >
       <Row>
         <div className="flex flex-wrap items-center gap-5">
@@ -165,11 +165,11 @@ export function ProfileSection() {
                   if (!file) return;
                   if (!PICTURE_TYPES.includes(file.type))
                     return setPictureError(
-                      "That file isn’t a picture Anchor can use. Pick a JPG, PNG or WebP.",
+                      "Ese archivo no es una imagen válida. Elige JPG, PNG o WebP.",
                     );
                   if (file.size > 5 * 1024 * 1024)
                     return setPictureError(
-                      "That picture is over 5 MB. Pick a smaller one.",
+                      "La imagen supera los 5 MB. Elige una más pequeña.",
                     );
                   setPictureError(null);
                   uploadPicture.mutate(file);
@@ -179,10 +179,10 @@ export function ProfileSection() {
                 id={uploadButtonId}
                 variant="secondary"
                 onClick={() => fileInputRef.current?.click()}
-                busy={uploadPicture.isPending && "Uploading…"}
+                busy={uploadPicture.isPending && "Subiendo…"}
               >
                 <Upload aria-hidden />
-                Upload a picture
+                Subir una foto
               </Button>
               {profileImage && (
                 <Button
@@ -194,14 +194,14 @@ export function ProfileSection() {
                     removePicture(profileImage);
                   }}
                 >
-                  Remove
+                  Eliminar
                 </Button>
               )}
             </div>
             {pictureError ? (
               <FieldError>{pictureError}</FieldError>
             ) : (
-              <FieldDescription>JPG, PNG or WebP, up to 5 MB.</FieldDescription>
+              <FieldDescription>JPG, PNG o WebP, hasta 5 MB.</FieldDescription>
             )}
           </div>
         </div>
@@ -210,7 +210,7 @@ export function ProfileSection() {
         <Field
           label={
             <span className="flex items-center gap-2.5">
-              Name
+              Nombre
               <SaveStatus state={nameState} onRetry={commitName} />
             </span>
           }
@@ -226,7 +226,7 @@ export function ProfileSection() {
             }}
           />
         </Field>
-        <Field label="Email" help="Only an admin can change your email.">
+        <Field label="Correo electrónico" help="Solo un administrador puede cambiar tu correo.">
           <Input value={user?.email ?? ""} readOnly />
         </Field>
       </Row>

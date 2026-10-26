@@ -233,19 +233,18 @@ function NotesView({ tagId }: { tagId: string | null }) {
           (tag ? (
             <EmptyState
               illustration="notes"
-              title={`No notes tagged #${tag.name}`}
+              title={`No hay notas con la etiqueta #${tag.name}`}
               action={newNoteButton}
             >
-              New notes you create here get this tag.
+              Las nuevas notas que crees aquí tendrán esta etiqueta.
             </EmptyState>
           ) : (
             <EmptyState
               illustration="notes"
-              title="No notes yet"
+              title="Aún no hay notas"
               action={newNoteButton}
             >
-              Create a note, or import your notes from Google Keep or Markdown
-              in Settings.
+              Crea una nota o importa tus notas desde Google Keep o Markdown en Ajustes.
             </EmptyState>
           ))}
         {noResults && <NoSearchResults list={list} />}
@@ -262,7 +261,7 @@ function NotesView({ tagId }: { tagId: string | null }) {
                 ? [
                     {
                       key: "pinned",
-                      label: "Pinned",
+                      label: "Fijadas",
                       icon: <Pin aria-hidden />,
                       notes: pinned,
                     },
@@ -272,7 +271,7 @@ function NotesView({ tagId }: { tagId: string | null }) {
                 ? [
                     {
                       key: "others",
-                      label: pinned.length ? "Others" : undefined,
+                      label: pinned.length ? "Otras" : undefined,
                       notes: others,
                     },
                   ]
@@ -283,7 +282,7 @@ function NotesView({ tagId }: { tagId: string | null }) {
       </AppPage>
 
       {!list.picking && (
-        <Fab label="New note" asChild>
+        <Fab label="Nueva nota" asChild>
           <Link
             href={newNote}
             data-new-note="fab"
@@ -303,7 +302,7 @@ function NotesView({ tagId }: { tagId: string | null }) {
         actions={[
           {
             key: "tag",
-            label: "Tag",
+            label: "Etiquetar",
             icon: <TagIcon aria-hidden />,
             onClick: (button) =>
               setTagAnchor((current) => (current ? null : button)),
@@ -311,7 +310,7 @@ function NotesView({ tagId }: { tagId: string | null }) {
           allPinned
             ? {
                 key: "unpin",
-                label: "Unpin",
+                label: "Desfijar",
                 icon: <PinOff aria-hidden />,
                 onClick: () =>
                   noteAction.mutate({
@@ -321,7 +320,7 @@ function NotesView({ tagId }: { tagId: string | null }) {
               }
             : {
                 key: "pin",
-                label: "Pin",
+                label: "Fijar",
                 icon: <Pin aria-hidden />,
                 onClick: () =>
                   noteAction.mutate({
@@ -331,7 +330,7 @@ function NotesView({ tagId }: { tagId: string | null }) {
               },
           {
             key: "archive",
-            label: "Archive",
+            label: "Archivar",
             icon: <Archive aria-hidden />,
             onClick: () =>
               noteAction.mutate({
@@ -341,7 +340,7 @@ function NotesView({ tagId }: { tagId: string | null }) {
           },
           {
             key: "delete",
-            label: "Delete",
+            label: "Eliminar",
             icon: <Trash2 aria-hidden />,
             onClick: deleteChosen,
           },

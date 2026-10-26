@@ -114,7 +114,7 @@ export default function LoginPage() {
 
   return (
     <>
-      <AuthHeading title="Welcome back" sub="Sign in to continue to Anchor." />
+      <AuthHeading title="Bienvenido de nuevo" sub="Inicia sesión para continuar en Anchor." />
       {oidc.data?.enabled && (
         <>
           <Button
@@ -124,7 +124,7 @@ export default function LoginPage() {
             onClick={signInWithProvider}
           >
             <KeyRound aria-hidden />
-            Continue with {providerName}
+            Continuar con {providerName}
           </Button>
           {!isProviderOnly && <OrDivider />}
         </>
@@ -137,12 +137,11 @@ export default function LoginPage() {
               className={`${linkButtonClass} self-center whitespace-nowrap`}
               onClick={() => oidc.refetch()}
             >
-              Try again
+              Reintentar
             </button>
           }
         >
-          Couldn’t load the sign-in options. You can still sign in with your
-          email.
+          No se pudieron cargar las opciones de inicio de sesión. Aún puedes iniciar sesión con tu correo.
         </AuthMessage>
       )}
       {errorMessage && <AuthMessage>{errorMessage}</AuthMessage>}
@@ -166,7 +165,7 @@ export default function LoginPage() {
             );
           }}
         >
-          <Field label="Email">
+          <Field label="Correo electrónico">
             <Input
               type="email"
               autoComplete="email"
@@ -179,7 +178,7 @@ export default function LoginPage() {
               }}
             />
           </Field>
-          <Field label="Password">
+          <Field label="Contraseña">
             <PasswordInput
               ref={passwordRef}
               autoComplete="current-password"
@@ -196,17 +195,17 @@ export default function LoginPage() {
             type="submit"
             size="lg"
             className="w-full"
-            busy={login.isPending && "Signing in…"}
+            busy={login.isPending && "Iniciando sesión…"}
           >
-            Sign in
+            Iniciar sesión
           </Button>
         </form>
       )}
       {!isProviderOnly && registrationMode.data?.mode !== "disabled" && (
         <p className="m-0 text-center text-muted-foreground text-ui">
-          New to Anchor?{" "}
+          ¿Eres nuevo en Anchor?{" "}
           <Link href="/register" className={linkButtonClass}>
-            Create an account
+            Crear una cuenta
           </Link>
         </p>
       )}

@@ -81,21 +81,21 @@ export function NoteEditorHeader(props: NoteEditorHeaderProps) {
   const afterMenu = React.useRef<(() => void) | null>(null);
   const late = !!props.reminder && isReminderPast(props.reminder);
   const bellLabel = props.reminder
-    ? `${late ? "Late reminder" : "Reminder"}: ${reminderLabel(props.reminder)}`
-    : "Add a reminder";
+    ? `${late ? "Recordatorio atrasado" : "Recordatorio"}: ${reminderLabel(props.reminder)}`
+    : "Añadir recordatorio";
 
   return (
     <div
       ref={roving.ref}
       className="ed-head"
       role="toolbar"
-      aria-label="Note"
+      aria-label="Nota"
       onFocus={roving.onFocus}
       onKeyDown={roving.onKeyDown}
     >
       <div className="ed-head-l">
-        <Tip label="Back">
-          <IconButton label="Back" onClick={props.onBack}>
+        <Tip label="Atrás">
+          <IconButton label="Atrás" onClick={props.onBack}>
             <ArrowLeft />
           </IconButton>
         </Tip>
@@ -103,8 +103,8 @@ export function NoteEditorHeader(props: NoteEditorHeaderProps) {
       </div>
       {props.trashed && props.canViewHistory && (
         <div className="ed-head-r">
-          <Tip label="Version history">
-            <IconButton label="Version history" onClick={props.onHistory}>
+          <Tip label="Historial de versiones">
+            <IconButton label="Historial de versiones" onClick={props.onHistory}>
               <History />
             </IconButton>
           </Tip>
@@ -116,9 +116,9 @@ export function NoteEditorHeader(props: NoteEditorHeaderProps) {
             <Popover
               onOpenChange={(open) => !open && props.onPreviewBackground(false)}
             >
-              <Tip label="Background">
+              <Tip label="Fondo">
                 <PopoverTrigger asChild>
-                  <IconButton label="Background">
+                  <IconButton label="Fondo">
                     <Palette />
                   </IconButton>
                 </PopoverTrigger>
@@ -156,9 +156,9 @@ export function NoteEditorHeader(props: NoteEditorHeaderProps) {
             </Popover>
           )}
           {props.saved && (
-            <Tip label={props.isPinned ? "Unpin" : "Pin"}>
+            <Tip label={props.isPinned ? "Desfijar" : "Fijar"}>
               <IconButton
-                label={props.isPinned ? "Unpin" : "Pin"}
+                label={props.isPinned ? "Desfijar" : "Fijar"}
                 aria-pressed={props.isPinned}
                 onClick={props.onTogglePin}
                 className={cn(
@@ -171,9 +171,9 @@ export function NoteEditorHeader(props: NoteEditorHeaderProps) {
             </Tip>
           )}
           {props.saved && props.isOwner && (
-            <Tip label={props.sharedWithCount ? "Sharing" : "Share"}>
+            <Tip label={props.sharedWithCount ? "Compartiendo" : "Compartir"}>
               <IconButton
-                label={props.sharedWithCount ? "Sharing" : "Share"}
+                label={props.sharedWithCount ? "Compartiendo" : "Compartir"}
                 onClick={props.onShare}
                 className={cn("max-md:hidden", afterSave)}
               >
@@ -183,9 +183,9 @@ export function NoteEditorHeader(props: NoteEditorHeaderProps) {
           )}
           {props.saved && (
             <DropdownMenu>
-              <Tip label="More">
+              <Tip label="Más opciones">
                 <DropdownMenuTrigger asChild>
-                  <IconButton label="More" className={cn(afterSave)}>
+                  <IconButton label="Más opciones" className={cn(afterSave)}>
                     <Ellipsis />
                   </IconButton>
                 </DropdownMenuTrigger>
@@ -204,12 +204,12 @@ export function NoteEditorHeader(props: NoteEditorHeaderProps) {
                 <div className="contents md:hidden">
                   <DropdownMenuItem onSelect={props.onTogglePin}>
                     {props.isPinned ? <PinOff /> : <Pin />}
-                    {props.isPinned ? "Unpin" : "Pin"}
+                    {props.isPinned ? "Desfijar" : "Fijar"}
                   </DropdownMenuItem>
                   {props.isOwner && (
                     <DropdownMenuItem onSelect={props.onShare}>
                       <UserPlus />
-                      Share
+                      Compartir
                     </DropdownMenuItem>
                   )}
                   <DropdownMenuSeparator />
@@ -221,24 +221,24 @@ export function NoteEditorHeader(props: NoteEditorHeaderProps) {
                     }}
                   >
                     <History />
-                    Version history
+                    Historial de versiones
                   </DropdownMenuItem>
                 )}
                 {props.isArchived ? (
                   <DropdownMenuItem onSelect={props.onUnarchive}>
                     <ArchiveRestore />
-                    Unarchive
+                    Desarchivar
                   </DropdownMenuItem>
                 ) : (
                   <DropdownMenuItem onSelect={props.onArchive}>
                     <Archive />
-                    Archive
+                    Archivar
                   </DropdownMenuItem>
                 )}
                 <DropdownMenuSeparator />
                 <DropdownMenuItem tone="danger" onSelect={props.onTrash}>
                   {props.isOwner ? <Trash2 /> : <LogOut />}
-                  {props.isOwner ? "Move to trash" : "Remove from my notes"}
+                  {props.isOwner ? "Mover a la papelera" : "Eliminar de mis notas"}
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -267,20 +267,20 @@ function SaveStatus({
       {state === "saved" && (
         <span data-s>
           <Check aria-hidden />
-          <span className={labelClass}>Saved</span>
+          <span className={labelClass}>Guardado</span>
         </span>
       )}
       {state === "saving" && (
         <span data-s>
           <LoaderCircle aria-hidden className="animate-spin" />
-          <span className={labelClass}>Saving…</span>
+          <span className={labelClass}>Guardando…</span>
         </span>
       )}
       {state === "offline" && (
         <Tip label={waitingHint}>
           <span data-s>
             <CloudOff aria-hidden />
-            <span className={labelClass}>Waiting to save</span>
+            <span className={labelClass}>Esperando para guardar</span>
             <span className="sr-only">. {waitingHint}</span>
           </span>
         </Tip>
@@ -288,13 +288,13 @@ function SaveStatus({
       {state === "failed" && (
         <span data-s className="font-medium text-late">
           <CircleAlert aria-hidden />
-          <span className={labelClass}>Couldn’t save</span>
+          <span className={labelClass}>No se pudo guardar</span>
           <button
             type="button"
             onClick={onRetry}
             className="ml-0.5 cursor-pointer border-0 bg-transparent p-0 font-semibold text-inherit underline decoration-current/35 underline-offset-3 hover:decoration-current"
           >
-            Try again
+            Reintentar
           </button>
         </span>
       )}

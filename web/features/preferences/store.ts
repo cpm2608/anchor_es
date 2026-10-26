@@ -7,6 +7,7 @@ export type SortOrder = "asc" | "desc";
 
 interface UIPreferences {
   sidebarCollapsed: boolean;
+  language: "es" | "en";
 }
 
 interface NotesPreferences {
@@ -39,6 +40,7 @@ interface PreferencesState {
 
 const defaultUIPreferences: UIPreferences = {
   sidebarCollapsed: false,
+  language: "es",
 };
 
 const defaultNotesPreferences: NotesPreferences = {

@@ -29,19 +29,19 @@ export function AppearanceSection() {
   const frameClass =
     "relative mb-2 h-16 overflow-hidden rounded-md shadow-[inset_0_0_0_1px_color-mix(in_srgb,var(--border)_80%,transparent)]";
   return (
-    <Section id="appearance" title="Appearance">
+    <Section id="appearance" title="Apariencia">
       <Row className="grid items-start gap-3.5">
-        <RowText title="Theme" text="Choose how Anchor looks." />
+        <RowText title="Tema" text="Elige cómo se ve Anchor." />
         <RadioCards
-          aria-label="Theme"
+          aria-label="Tema"
           value={theme as "light" | "dark" | "system"}
           onValueChange={(v) => switchTheme(v, setTheme)}
           className="grid-cols-3 max-md:grid-cols-1"
           options={[
             {
               value: "light",
-              label: "Light",
-              description: "Always light",
+              label: "Claro",
+              description: "Siempre claro",
               picture: (
                 <div className={frameClass}>
                   <ThemeThumb theme="light" />
@@ -50,8 +50,8 @@ export function AppearanceSection() {
             },
             {
               value: "dark",
-              label: "Dark",
-              description: "Always dark",
+              label: "Oscuro",
+              description: "Siempre oscuro",
               picture: (
                 <div className={frameClass}>
                   <ThemeThumb theme="dark" />
@@ -60,8 +60,8 @@ export function AppearanceSection() {
             },
             {
               value: "system",
-              label: "Match system",
-              description: "Follows your device",
+              label: "Sistema",
+              description: "Sigue a tu dispositivo",
               picture: (
                 <div className={frameClass}>
                   <div className="absolute inset-0">

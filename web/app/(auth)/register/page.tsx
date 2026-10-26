@@ -134,11 +134,11 @@ export default function RegisterPage() {
   return (
     <>
       <AuthHeading
-        title="Create your account"
+        title="Crea tu cuenta"
         sub={
           registrationMode.data?.mode === "review"
-            ? "An admin approves new accounts before you can sign in."
-            : "Start capturing your thoughts."
+            ? "Un administrador debe aprobar las cuentas nuevas antes de poder iniciar sesión."
+            : "Empieza a capturar tus notas e ideas."
         }
       />
       {oidc.data?.enabled && (
@@ -150,7 +150,7 @@ export default function RegisterPage() {
             onClick={() => initiate()}
           >
             <KeyRound aria-hidden />
-            Continue with {providerName}
+            Continuar con {providerName}
           </Button>
           {!isProviderOnly && <OrDivider />}
         </>
@@ -158,11 +158,11 @@ export default function RegisterPage() {
       {errors.form && <AuthMessage>{errors.form}</AuthMessage>}
       {!isProviderOnly && (
         <form className="grid gap-3.5" noValidate onSubmit={submit}>
-          <Field label="Name" error={errors.name}>
+          <Field label="Nombre" error={errors.name}>
             <Input
               ref={refs.name}
               autoComplete="name"
-              placeholder="Your name"
+              placeholder="Tu nombre"
               maxLength={NAME_MAX_LENGTH}
               value={name}
               boxClassName="h-field-large"
@@ -172,12 +172,12 @@ export default function RegisterPage() {
               }}
             />
           </Field>
-          <Field label="Email" error={errors.email}>
+          <Field label="Correo electrónico" error={errors.email}>
             <Input
               ref={refs.email}
               type="email"
               autoComplete="email"
-              placeholder="you@example.com"
+              placeholder="tu@ejemplo.com"
               value={email}
               boxClassName="h-field-large"
               onChange={(e) => {
@@ -187,8 +187,8 @@ export default function RegisterPage() {
             />
           </Field>
           <Field
-            label="Password"
-            help="At least 8 characters."
+            label="Contraseña"
+            help="Al menos 8 caracteres."
             error={errors.password}
           >
             <PasswordInput
@@ -206,16 +206,16 @@ export default function RegisterPage() {
             type="submit"
             size="lg"
             className="w-full"
-            busy={register.isPending && "Creating account…"}
+            busy={register.isPending && "Creando cuenta…"}
           >
-            Create account
+            Crear cuenta
           </Button>
         </form>
       )}
       <p className="m-0 text-center text-muted-foreground text-ui">
-        Already have an account?{" "}
+        ¿Ya tienes una cuenta?{" "}
         <Link href="/login" className={linkButtonClass}>
-          Sign in
+          Iniciar sesión
         </Link>
       </p>
     </>

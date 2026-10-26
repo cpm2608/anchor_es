@@ -155,38 +155,38 @@ export default function TrashPage() {
           <PageTitle
             count={isLoading || loadFailed ? undefined : list.visible.length}
           >
-            Trash
+            Papelera
           </PageTitle>
         }
         actions={
           hasNotes && (
-            <NoteListActions list={list} placeholder="Search trash">
+            <NoteListActions list={list} placeholder="Buscar en la papelera">
               <TopBarButton
                 icon={<Trash2 aria-hidden />}
                 onClick={() =>
                   setPendingDelete({ ids: notes.map((x) => x.id), all: true })
                 }
               >
-                Empty trash
+                Vaciar papelera
               </TopBarButton>
             </NoteListActions>
           )
         }
       >
         <p className="m-0 -mt-2 mb-1 text-muted-foreground text-ui">
-          {`Notes in the trash are permanently deleted after ${TRASH_RETENTION_DAYS} days.`}
+          {`Las notas en la papelera se eliminan definitivamente después de ${TRASH_RETENTION_DAYS} días.`}
         </p>
         <NotesBoardSkeleton loading={isLoading} />
         {loadFailed && (
           <LoadFailedState
-            title="Couldn’t load your trash"
+            title="No se pudo cargar la papelera"
             onRetry={() => refetch()}
             isRetrying={isFetching}
           />
         )}
         {!isLoading && !loadFailed && !hasNotes && (
-          <EmptyState illustration="trash" title="Trash is empty">
-            {`Notes you delete stay here for ${TRASH_RETENTION_DAYS} days.`}
+          <EmptyState illustration="trash" title="La papelera está vacía">
+            {`Las notas eliminadas permanecen aquí durante ${TRASH_RETENTION_DAYS} días.`}
           </EmptyState>
         )}
         {hasNotes && !list.visible.length && <NoSearchResults list={list} />}
@@ -213,13 +213,13 @@ export default function TrashPage() {
         actions={[
           {
             key: "restore",
-            label: "Restore",
+            label: "Restaurar",
             icon: <RotateCcw aria-hidden />,
             onClick: () => restore.mutate(chosenIds),
           },
           {
             key: "forever",
-            label: "Delete permanently",
+            label: "Eliminar permanentemente",
             icon: <Trash2 aria-hidden />,
             onClick: () => setPendingDelete({ ids: chosenIds }),
           },

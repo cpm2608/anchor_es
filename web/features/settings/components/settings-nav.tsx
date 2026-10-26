@@ -14,13 +14,13 @@ import { glidePill, prefersReducedMotion } from "@/lib/motion";
 import { onUserScroll } from "@/lib/user-scroll";
 
 const SECTIONS = [
-  { id: "profile", label: "Profile", icon: UserRound },
-  { id: "appearance", label: "Appearance", icon: SunMoon },
+  { id: "profile", label: "Perfil", icon: UserRound },
+  { id: "appearance", label: "Apariencia", icon: SunMoon },
   { id: "editor", label: "Editor", icon: PencilLine },
-  { id: "token", label: "API token", icon: KeyRound },
-  { id: "data", label: "Import and export", icon: HardDriveDownload },
-  { id: "password", label: "Password", icon: Lock },
-  { id: "about", label: "About", icon: Info },
+  { id: "token", label: "Token de API", icon: KeyRound },
+  { id: "data", label: "Importar y exportar", icon: HardDriveDownload },
+  { id: "password", label: "Contraseña", icon: Lock },
+  { id: "about", label: "Acerca de", icon: Info },
 ] as const;
 
 export function SettingsNav() {

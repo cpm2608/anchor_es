@@ -120,23 +120,23 @@ export function NoteEditorContent(props: NoteEditorContentProps) {
           }
         >
           <ListChecks aria-hidden />
-          Checklist
+          Lista de tareas
         </button>
         <button
           type="button"
           onClick={() => props.contentEditorRef?.current?.startList?.("bullet")}
         >
           <List aria-hidden />
-          List
+          Lista
         </button>
         {props.canUpload && (
           <button type="button" onClick={() => strip.current?.pick()}>
             <ImagePlus aria-hidden />
-            Picture or audio
+            Imagen o audio
           </button>
         )}
         <span className="hint">
-          or type <kbd>/</kbd> for more
+          o escribe <kbd>/</kbd> para más
         </span>
       </div>
     );
@@ -145,14 +145,14 @@ export function NoteEditorContent(props: NoteEditorContentProps) {
     <div ref={root} className="note-in">
       {props.readOnlyBar}
       {props.readOnly ? (
-        <h1 className="n-title">{props.title || "Untitled"}</h1>
+        <h1 className="n-title">{props.title || "Sin título"}</h1>
       ) : (
         <input
           ref={props.titleInputRef}
           className="n-title"
           value={props.title}
-          aria-label="Title"
-          placeholder="Title"
+          aria-label="Título"
+          placeholder="Título"
           spellCheck={false}
           onChange={(e) => props.onTitleChange(e.target.value)}
           onKeyDown={(e) => {
@@ -459,7 +459,7 @@ function TagRow(props: NoteEditorContentProps) {
               className="inline-flex h-chip cursor-pointer items-center gap-1.5 rounded-pill border-0 bg-transparent px-2.5 text-small text-note-muted hover:bg-note-surface hover:text-foreground max-md:h-7.5 [&_svg]:size-3.5"
             >
               <Plus aria-hidden />
-              Add tag
+              Añadir etiqueta
             </button>
           </PopoverTrigger>
           <PopoverContent align="start" className="p-0">
