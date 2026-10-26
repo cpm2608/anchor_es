@@ -67,15 +67,15 @@ export function TagDialog({
     },
     onError: (error: Error) => {
       const failed = isNew
-        ? `Couldn’t create #${trimmed}.`
-        : "Couldn’t rename the tag.";
+        ? `No se pudo crear #${trimmed}.`
+        : "No se pudo renombrar la etiqueta.";
       if (!(error instanceof HTTPError))
-        return setServerError(`${failed} Check your connection.`);
+        return setServerError(`${failed} Comprueba tu conexión.`);
       if (error.response.status !== 409) return setServerError(failed);
       queryClient.invalidateQueries({ queryKey: ["tags"] });
       // A 409 with serverTag is a version conflict, not a taken name.
       if ((error.data as { serverTag?: unknown } | undefined)?.serverTag)
-        return setServerError(`${failed} It was changed somewhere else.`);
+        return setServerError(`${failed} Se modificó en otro lugar.`);
       setRefusedName(trimmed.toLowerCase());
     },
   });
@@ -94,12 +94,12 @@ export function TagDialog({
     >
       <DialogContent>
         <form onSubmit={submit} className="contents">
-          <DialogTitle>{isNew ? "New tag" : "Rename tag"}</DialogTitle>
+          <DialogTitle>{isNew ? "Nueva etiqueta" : "Renombrar etiqueta"}</DialogTitle>
           <DialogBody>
             <Field
-              label="Name"
+              label="Nombre"
               error={
-                taken ? `A tag named “${trimmed}” already exists.` : undefined
+                taken ? `Ya existe una etiqueta llamada «${trimmed}».` : undefined
               }
             >
               <Input
@@ -108,7 +108,7 @@ export function TagDialog({
                   setName(e.target.value);
                   setServerError(null);
                 }}
-                placeholder="For example, travel"
+                placeholder="Por ejemplo, viajes"
                 autoFocus
                 onFocus={(e) => !isNew && e.currentTarget.select()}
               />
@@ -130,7 +130,7 @@ export function TagDialog({
                             !trimmed && "font-medium text-muted-foreground",
                           )}
                         >
-                          {trimmed || "tag name"}
+                          {trimmed || "nombre de etiqueta"}
                         </span>
                       }
                       className="max-w-full overflow-hidden font-semibold"
@@ -149,14 +149,14 @@ export function TagDialog({
               onClick={() => onOpenChange(false)}
               disabled={mutation.isPending}
             >
-              Cancel
+              Cancelar
             </Button>
             <Button
               type="submit"
               disabled={!trimmed || taken || unchanged}
-              busy={mutation.isPending && (isNew ? "Creating…" : "Renaming…")}
+              busy={mutation.isPending && (isNew ? "Creando…" : "Renombrando…")}
             >
-              {isNew ? "Create tag" : "Rename"}
+              {isNew ? "Crear etiqueta" : "Renombrar"}
             </Button>
           </DialogFooter>
         </form>

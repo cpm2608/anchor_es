@@ -111,21 +111,26 @@ function NotesView({ tagId }: { tagId: string | null }) {
         try {
           await run();
         } catch {
-          toast.error("Couldn’t undo that");
+          toast.error("No se pudo deshacer la acción");
         }
         refresh();
       };
       if (kind === "pin" || kind === "unpin")
         toast.success(
-          `${plural(ids.length, "note")} ${kind === "pin" ? "pinned" : "unpinned"}`,
+          kind === "pin"
+            ? (ids.length === 1 ? "Nota fijada" : `${ids.length} notas fijadas`)
+            : (ids.length === 1 ? "Nota desfijada" : `${ids.length} notas desfijadas`),
           {
             undo: () => undo(() => bulkPinNotes(ids, kind !== "pin")),
           },
         );
       else if (kind === "archive")
-        toast.success(`${plural(ids.length, "note")} archived`, {
-          undo: () => undo(() => eachLimited(ids, unarchiveNote)),
-        });
+        toast.success(
+          ids.length === 1 ? "Nota archivada" : `${ids.length} notas archivadas`,
+          {
+            undo: () => undo(() => eachLimited(ids, unarchiveNote)),
+          },
+        );
       else {
         const ownedIds = context?.ownedIds ?? [];
         toast.success(
@@ -138,12 +143,12 @@ function NotesView({ tagId }: { tagId: string | null }) {
     },
     onError: (_, { kind, ids }) => {
       const verb = {
-        pin: "pin",
-        unpin: "unpin",
-        archive: "archive",
-        trash: "delete",
+        pin: "fijar",
+        unpin: "desfijar",
+        archive: "archivar",
+        trash: "eliminar",
       }[kind];
-      toast.error(`Couldn’t ${verb} ${ids.length === 1 ? "note" : "notes"}`, {
+      toast.error(`No se pudo ${verb} ${ids.length === 1 ? "la nota" : "las notas"}`, {
         retry: () => noteAction.mutate({ kind, ids }),
       });
     },
@@ -168,7 +173,7 @@ function NotesView({ tagId }: { tagId: string | null }) {
         onClick={(e) => rememberNewNoteButton(e.currentTarget)}
       >
         <Plus aria-hidden />
-        New note
+        Nueva nota
       </Link>
     </Button>
   );
@@ -189,10 +194,10 @@ function NotesView({ tagId }: { tagId: string | null }) {
       >
         {tag.name}
       </PageTitle>
-      <Tip label="Show all notes">
+      <Tip label="Mostrar todas las notas">
         <IconButton
           size="sm"
-          label="Show all notes"
+          label="Mostrar todas las notas"
           onClick={() => router.push("/notes")}
         >
           <X />
@@ -200,7 +205,7 @@ function NotesView({ tagId }: { tagId: string | null }) {
       </Tip>
     </div>
   ) : (
-    <PageTitle count={count}>Notes</PageTitle>
+    <PageTitle count={count}>Notas</PageTitle>
   );
 
   const removeCount = confirmRemove?.ids.length ?? 0;
@@ -215,7 +220,7 @@ function NotesView({ tagId }: { tagId: string | null }) {
           !loadFailed && (
             <NoteListActions
               list={list}
-              placeholder={tag ? `Search #${tag.name}` : "Search notes"}
+              placeholder={tag ? `Buscar #${tag.name}` : "Buscar notas"}
               autoFocus={searchParams.has("search")}
             />
           )
@@ -224,7 +229,7 @@ function NotesView({ tagId }: { tagId: string | null }) {
         <NotesBoardSkeleton loading={isLoading} />
         {loadFailed && (
           <LoadFailedState
-            title="Couldn’t load your notes"
+            title="No se pudieron cargar tus notas"
             onRetry={() => refetch()}
             isRetrying={isFetching}
           />
@@ -350,13 +355,13 @@ function NotesView({ tagId }: { tagId: string | null }) {
       <ConfirmationDialog
         open={!!confirmRemove}
         onOpenChange={(open) => !open && setConfirmRemove(null)}
-        title={`Delete ${plural(removeCount, "note")}?`}
+        title={`¿Eliminar ${removeCount === 1 ? "la nota" : `las ${removeCount} notas`}?`}
         description={deleteNotesWarning(
           removeCount - removeSharedCount,
           removeSharedCount,
         )}
-        confirmLabel="Delete"
-        busyLabel="Deleting…"
+        confirmLabel="Eliminar"
+        busyLabel="Eliminando…"
         isPending={noteAction.isPending}
         onConfirm={() =>
           confirmRemove &&

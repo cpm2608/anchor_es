@@ -66,8 +66,8 @@ export default function TrashPage() {
       list.stopPicking();
       toast.success(
         ids.length === 1
-          ? "Note restored"
-          : `${plural(ids.length, "note")} restored`,
+          ? "Nota restaurada"
+          : `${ids.length} notas restauradas`,
         {
           undo: async () => {
             list.prepareCardMotion();
@@ -76,7 +76,7 @@ export default function TrashPage() {
                 deleteNote(id, trashDates?.get(id)),
               );
             } catch {
-              toast.error("Couldn’t undo that");
+              toast.error("No se pudo deshacer la acción");
             }
             refresh();
           },
@@ -84,7 +84,7 @@ export default function TrashPage() {
       );
     },
     onError: (_, ids) =>
-      toast.error(`Couldn’t restore ${ids.length === 1 ? "note" : "notes"}`, {
+      toast.error(`No se pudo restaurar ${ids.length === 1 ? "la nota" : "las notas"}`, {
         retry: () => restore.mutate(ids),
       }),
   });
@@ -99,18 +99,18 @@ export default function TrashPage() {
       setPendingDelete(null);
       toast.success(
         all
-          ? "Trash emptied"
+          ? "Papelera vaciada"
           : ids.length === 1
-            ? "Note permanently deleted"
-            : `${plural(ids.length, "note")} permanently deleted`,
+            ? "Nota eliminada definitivamente"
+            : `${ids.length} notas eliminadas definitivamente`,
       );
     },
     onError: (_, variables) => {
       refresh();
       toast.error(
         variables.all
-          ? "Couldn’t empty trash"
-          : `Couldn’t delete ${variables.ids.length === 1 ? "note" : "notes"}`,
+          ? "No se pudo vaciar la papelera"
+          : `No se pudo eliminar ${variables.ids.length === 1 ? "la nota" : "las notas"}`,
         { retry: () => remove.mutate(variables) },
       );
     },
@@ -120,20 +120,20 @@ export default function TrashPage() {
   const renderActions = React.useCallback(
     (note: Note) => (
       <>
-        <Tip label="Restore">
+        <Tip label="Restaurar">
           <IconButton
             size="sm"
-            label="Restore"
+            label="Restaurar"
             onClick={() => restoreNotes([note.id])}
           >
             <RotateCcw />
           </IconButton>
         </Tip>
-        <Tip label="Delete permanently">
+        <Tip label="Eliminar permanentemente">
           <IconButton
             size="sm"
             tone="danger"
-            label="Delete permanently"
+            label="Eliminar permanentemente"
             onClick={() => setPendingDelete({ ids: [note.id] })}
           >
             <Trash2 />
@@ -231,18 +231,18 @@ export default function TrashPage() {
         onOpenChange={(open) => !open && setPendingDelete(null)}
         title={
           pendingDelete?.all
-            ? "Empty trash?"
+            ? "¿Vaciar la papelera?"
             : deleteCount === 1
-              ? "Permanently delete this note?"
-              : `Permanently delete ${deleteCount} notes?`
+              ? "¿Eliminar esta nota permanentemente?"
+              : `¿Eliminar permanentemente ${deleteCount} notas?`
         }
         description={
           pendingDelete?.all
-            ? `${plural(deleteCount, "note")} will be permanently deleted. This can’t be undone.`
-            : `This can’t be undone. People you shared ${deleteCount === 1 ? "it" : "them"} with will lose access too.`
+            ? `${deleteCount === 1 ? "1 nota será eliminada" : `${deleteCount} notas serán eliminadas`} de forma permanente. Esta acción no se puede deshacer.`
+            : `Esta acción no se puede deshacer. Las personas con las que ${deleteCount === 1 ? "la compartiste" : "las compartiste"} también perderán el acceso.`
         }
-        confirmLabel={pendingDelete?.all ? "Empty trash" : "Delete permanently"}
-        busyLabel={pendingDelete?.all ? "Emptying trash…" : "Deleting…"}
+        confirmLabel={pendingDelete?.all ? "Vaciar papelera" : "Eliminar permanentemente"}
+        busyLabel={pendingDelete?.all ? "Vaciando papelera…" : "Eliminando…"}
         isPending={remove.isPending}
         onConfirm={() => pendingDelete && remove.mutate(pendingDelete)}
       />

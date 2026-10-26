@@ -93,10 +93,10 @@ export function SingleSignOn({ isHidden = false }: { isHidden?: boolean }) {
     onSuccess: (updated) => {
       queryClient.setQueryData(adminKeys.oidc, updated);
       queryClient.invalidateQueries({ queryKey: ["oidc-config"] });
-      toast.success("Single sign-on settings saved");
+      toast.success("Configuración de inicio de sesión único guardada");
     },
     onError: (_, dto) =>
-      toast.error("Couldn’t save single sign-on", {
+      toast.error("No se pudo guardar la configuración de SSO", {
         retry: () => save.mutate(dto),
       }),
   });
@@ -104,9 +104,9 @@ export function SingleSignOn({ isHidden = false }: { isHidden?: boolean }) {
   if ((settingsQuery.isError && !settings) || settingsRetry.isRetrying)
     return (
       <section className="grid gap-2.5">
-        <h2 className="m-0 px-1 text-title">Single sign-on</h2>
+        <h2 className="m-0 px-1 text-title">Inicio de sesión único (SSO)</h2>
         <LoadFailedRow
-          message="Couldn’t load the single sign-on settings."
+          message="No se pudo cargar la configuración de SSO."
           onRetry={settingsRetry.retry}
           isRetrying={settingsRetry.isRetrying}
         />
@@ -123,17 +123,17 @@ export function SingleSignOn({ isHidden = false }: { isHidden?: boolean }) {
   const locked = settings.isLocked;
   const updateForm = (patch: Partial<OidcForm>) =>
     setForm((prev) => (prev ? { ...prev, ...patch } : prev));
-  const providerName = form.providerName.trim() || "your provider";
+  const providerName = form.providerName.trim() || "tu proveedor";
   const hasSecret = settings.hasClientSecret && !form.clearSecret;
 
   const submit = () => {
     const fieldErrors: typeof errors = {};
     if (form.enabled && !form.issuerUrl.trim())
-      fieldErrors.issuer = "Enter the issuer URL.";
+      fieldErrors.issuer = "Introduce la URL del emisor.";
     else if (form.enabled && !/^https?:\/\/\S+$/i.test(form.issuerUrl.trim()))
-      fieldErrors.issuer = "Enter a full URL, like https://auth.example.com.";
+      fieldErrors.issuer = "Introduce una URL válida, como https://auth.ejemplo.com.";
     if (form.enabled && !form.clientId.trim())
-      fieldErrors.client = "Enter the client ID.";
+      fieldErrors.client = "Introduce el ID de cliente.";
     setErrors(fieldErrors);
     if (fieldErrors.issuer || fieldErrors.client) return;
     const dto: UpdateOidcSettingsDto = {
@@ -151,14 +151,13 @@ export function SingleSignOn({ isHidden = false }: { isHidden?: boolean }) {
   return (
     <section className="grid gap-2.5">
       <SectionHeader
-        title="Single sign-on"
-        description="Let people sign in with your identity provider, like Pocket ID or Authelia (OIDC)."
+        title="Inicio de sesión único (SSO)"
+        description="Permite que los usuarios inicien sesión con tu proveedor de identidad, como Google, Authelia o Pocket ID (OIDC)."
       />
       {locked && (
         <LockNote>
-          Set by <code>OIDC_ENABLED</code>, <code>OIDC_ISSUER_URL</code> and{" "}
-          <code>OIDC_CLIENT_ID</code> on the server. Remove them there to change
-          these here.
+          Definido por <code>OIDC_ENABLED</code>, <code>OIDC_ISSUER_URL</code> y{" "}
+          <code>OIDC_CLIENT_ID</code> en el servidor. Quítalos allí para modificarlos aquí.
         </LockNote>
       )}
       <div
@@ -168,10 +167,10 @@ export function SingleSignOn({ isHidden = false }: { isHidden?: boolean }) {
         <Row>
           <div className="grid min-w-50 flex-1 gap-0.5">
             <label htmlFor="oidc-on" className="font-semibold text-ui">
-              Sign in with a provider
+              Iniciar sesión con un proveedor
             </label>
             <span className="text-meta text-muted-foreground">
-              Adds a “Continue with {providerName}” button to the sign-in page.
+              Añade un botón «Continuar con {providerName}» a la página de inicio de sesión.
             </span>
           </div>
           <Switch
@@ -186,8 +185,8 @@ export function SingleSignOn({ isHidden = false }: { isHidden?: boolean }) {
             <Row className="grid gap-3.5">
               <div className="grid grid-cols-2 items-start gap-3.5 max-md:grid-cols-1">
                 <Field
-                  label="Provider name"
-                  help="Shown on the sign-in button."
+                  label="Nombre del proveedor"
+                  help="Se muestra en el botón de inicio de sesión."
                 >
                   <Input
                     value={form.providerName}
@@ -197,12 +196,12 @@ export function SingleSignOn({ isHidden = false }: { isHidden?: boolean }) {
                     }
                   />
                 </Field>
-                <Field label="Issuer URL" error={errors.issuer}>
+                <Field label="URL del emisor (Issuer)" error={errors.issuer}>
                   <Input
                     value={form.issuerUrl}
                     readOnly={locked}
                     inputMode="url"
-                    placeholder="https://auth.example.com"
+                    placeholder="https://auth.ejemplo.com"
                     onChange={(e) => {
                       updateForm({ issuerUrl: e.target.value });
                       setErrors((prev) => ({ ...prev, issuer: undefined }));
@@ -211,7 +210,7 @@ export function SingleSignOn({ isHidden = false }: { isHidden?: boolean }) {
                 </Field>
               </div>
               <div className="grid grid-cols-2 items-start gap-3.5 max-md:grid-cols-1">
-                <Field label="Client ID" error={errors.client}>
+                <Field label="ID de cliente (Client ID)" error={errors.client}>
                   <Input
                     value={form.clientId}
                     readOnly={locked}
@@ -223,26 +222,26 @@ export function SingleSignOn({ isHidden = false }: { isHidden?: boolean }) {
                 </Field>
                 {locked ? (
                   <Field
-                    label="Client secret"
-                    aside="Optional"
-                    help="Set on the server."
+                    label="Secreto de cliente (Client Secret)"
+                    aside="Opcional"
+                    help="Definido en el servidor."
                   >
                     <Input
                       readOnly
                       value=""
-                      placeholder={settings.hasClientSecret ? "Saved" : "None"}
+                      placeholder={settings.hasClientSecret ? "Guardado" : "Ninguno"}
                     />
                   </Field>
                 ) : hasSecret ? (
                   <Field
-                    label="Client secret"
-                    aside="Optional"
-                    help="The saved secret is never shown."
+                    label="Secreto de cliente (Client Secret)"
+                    aside="Opcional"
+                    help="El secreto guardado nunca se muestra."
                   >
                     <Input
                       type="password"
                       value={form.clientSecret}
-                      placeholder="Saved. Type a new one to replace it."
+                      placeholder="Guardado. Escribe uno nuevo para reemplazarlo."
                       onChange={(e) =>
                         updateForm({ clientSecret: e.target.value })
                       }
@@ -252,20 +251,20 @@ export function SingleSignOn({ isHidden = false }: { isHidden?: boolean }) {
                             updateForm({ clientSecret: "", clearSecret: true })
                           }
                         >
-                          Clear
+                          Borrar
                         </InputButton>
                       }
                     />
                   </Field>
                 ) : (
                   <Field
-                    label="Client secret"
-                    aside="Optional"
-                    help="The Anchor phone app needs a public client, so leave this empty if people sign in from their phones."
+                    label="Secreto de cliente (Client Secret)"
+                    aside="Opcional"
+                    help="La app móvil de Anchor requiere un cliente público, déjalo vacío si acceden desde móviles."
                   >
                     <PasswordInput
                       value={form.clientSecret}
-                      placeholder="Leave empty for the phone app"
+                      placeholder="Dejar vacío para la app móvil"
                       onChange={(e) =>
                         updateForm({ clientSecret: e.target.value })
                       }
@@ -277,10 +276,10 @@ export function SingleSignOn({ isHidden = false }: { isHidden?: boolean }) {
             <Row>
               <div className="grid min-w-50 flex-1 gap-0.5">
                 <label htmlFor="oidc-only" className="font-semibold text-ui">
-                  Only sign in with {providerName}
+                  Iniciar sesión únicamente con {providerName}
                 </label>
                 <span className="text-meta text-muted-foreground">
-                  Turns off sign-in and sign-up with email and password.
+                  Desactiva el inicio de sesión y registro mediante correo y contraseña.
                 </span>
               </div>
               <Switch
@@ -294,11 +293,11 @@ export function SingleSignOn({ isHidden = false }: { isHidden?: boolean }) {
             </Row>
             <Row className="block">
               <div className="grid gap-1.5 rounded-lg bg-muted px-3.5 py-3">
-                <b className="font-semibold text-meta">Callback URL</b>
+                <b className="font-semibold text-meta">URL de callback (redirección)</b>
                 <Input
                   readOnly
                   mono
-                  aria-label="Callback URL"
+                  aria-label="URL de callback"
                   value={settings.callbackUrl}
                   boxClassName="bg-card"
                   end={
@@ -306,16 +305,16 @@ export function SingleSignOn({ isHidden = false }: { isHidden?: boolean }) {
                       onClick={() =>
                         copyText(settings.callbackUrl).then(
                           () => setCopied(true),
-                          () => toast.error("Couldn’t copy the address"),
+                          () => toast.error("No se pudo copiar la dirección"),
                         )
                       }
                     >
-                      {copied ? "Copied" : "Copy"}
+                      {copied ? "Copiada" : "Copiar"}
                     </InputButton>
                   }
                 />
                 <FieldDescription>
-                  Add this as the redirect URL in {providerName}. It’s based on{" "}
+                  Añade esta URL como la URL de redirección autorizada en {providerName}. Se basa en{" "}
                   <code className="rounded-[5px] bg-foreground/7 px-1.25 py-px font-mono text-foreground text-small">
                     APP_URL
                   </code>
@@ -342,7 +341,7 @@ export function SingleSignOn({ isHidden = false }: { isHidden?: boolean }) {
           )}
         >
           <span className="flex-1">
-            You have unsaved changes to single sign-on.
+            Tienes cambios sin guardar en el inicio de sesión único.
           </span>
           <Button
             variant="quiet"
@@ -353,15 +352,15 @@ export function SingleSignOn({ isHidden = false }: { isHidden?: boolean }) {
               setErrors({});
             }}
           >
-            Discard
+            Descartar
           </Button>
           <Button
             size="sm"
             className="bg-inverse-foreground bg-none text-inverse shadow-none hover:bg-inverse-foreground/90"
             onClick={submit}
-            busy={save.isPending && "Saving…"}
+            busy={save.isPending && "Guardando…"}
           >
-            Save
+            Guardar
           </Button>
         </div>
       )}

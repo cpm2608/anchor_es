@@ -15,14 +15,14 @@ import type { ExportFormat } from "../types";
 const CHOICES = [
   {
     format: "anchor",
-    label: "Anchor backup (.zip)",
-    hint: "Everything, to restore later: notes, tags and attachments",
+    label: "Copia de seguridad Anchor (.zip)",
+    hint: "Todo, para restaurar luego: notas, etiquetas y adjuntos",
     icon: FolderArchive,
   },
   {
     format: "markdown",
-    label: "Markdown files (.zip)",
-    hint: "Plain .md files for Obsidian, Nextcloud Notes and others",
+    label: "Archivos Markdown (.zip)",
+    hint: "Archivos .md para Obsidian, Nextcloud Notes y otros",
     icon: FileText,
   },
 ] as const;
@@ -30,9 +30,9 @@ const CHOICES = [
 function startExport(format: ExportFormat) {
   void toast
     .promise(downloadExport(format), {
-      loading: "Preparing your export…",
-      success: "Export downloaded",
-      error: "Couldn’t export your notes",
+      loading: "Preparando tu exportación…",
+      success: "Exportación descargada",
+      error: "No se pudieron exportar tus notas",
       retry: () => startExport(format),
     })
     .catch(() => {});
@@ -44,7 +44,7 @@ export function ExportMenu() {
       <DropdownMenuTrigger asChild>
         <Button variant="secondary">
           <Download aria-hidden />
-          Export
+          Exportar
           <ChevronDown aria-hidden className="-mr-1 text-muted-foreground" />
         </Button>
       </DropdownMenuTrigger>

@@ -31,16 +31,16 @@ interface ViewOptionsProps {
 
 const ORDER_OPTIONS: Record<SortBy, [SortOrder, string][]> = {
   updatedAt: [
-    ["desc", "Newest first"],
-    ["asc", "Oldest first"],
+    ["desc", "Más recientes primero"],
+    ["asc", "Más antiguos primero"],
   ],
   createdAt: [
-    ["desc", "Newest first"],
-    ["asc", "Oldest first"],
+    ["desc", "Más recientes primero"],
+    ["asc", "Más antiguos primero"],
   ],
   title: [
-    ["asc", "A to Z"],
-    ["desc", "Z to A"],
+    ["asc", "De la A a la Z"],
+    ["desc", "De la Z a la A"],
   ],
 };
 
@@ -57,45 +57,45 @@ export function ViewOptions({
     <Popover>
       <PopoverTrigger asChild>
         <TopBarButton icon={<SlidersHorizontal aria-hidden />}>
-          View
+          Vista
         </TopBarButton>
       </PopoverTrigger>
       <PopoverContent
         align="end"
-        aria-label="View options"
+        aria-label="Opciones de vista"
         className="grid w-68 gap-3 p-3"
       >
         <div>
-          <h2 className={headingClass}>Layout</h2>
+          <h2 className={headingClass}>Diseño</h2>
           <SegmentedControl
             variant="tiles"
-            aria-label="Layout"
+            aria-label="Diseño"
             value={layout}
             onValueChange={onLayout}
             options={[
               {
                 value: "masonry",
-                label: "Masonry",
+                label: "Mosaico",
                 icon: <LayoutDashboard aria-hidden />,
               },
               {
                 value: "grid",
-                label: "Grid",
+                label: "Cuadrícula",
                 icon: <LayoutGrid aria-hidden />,
               },
-              { value: "list", label: "List", icon: <Rows3 aria-hidden /> },
+              { value: "list", label: "Lista", icon: <Rows3 aria-hidden /> },
             ]}
           />
         </div>
         <div>
           <h2 className={headingClass} id="sort-by">
-            Sort by
+            Ordenar por
           </h2>
           <SortChoices sortBy={sortBy} onSort={onSort} />
         </div>
         <SegmentedControl
           full
-          aria-label="Order"
+          aria-label="Orden"
           value={sortOrder}
           onValueChange={(order) => onSort(sortBy, order)}
           options={ORDER_OPTIONS[sortBy].map(([value, label]) => ({
@@ -109,9 +109,9 @@ export function ViewOptions({
 }
 
 const SORT_CHOICES = [
-  ["updatedAt", "Last edited", PencilLine],
-  ["createdAt", "Date created", CalendarPlus],
-  ["title", "Title", ALargeSmall],
+  ["updatedAt", "Última edición", PencilLine],
+  ["createdAt", "Fecha de creación", CalendarPlus],
+  ["title", "Título", ALargeSmall],
 ] as const;
 
 function SortChoices({

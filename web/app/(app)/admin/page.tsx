@@ -40,42 +40,42 @@ function AdminPageContent() {
   const waitingCount = pending.data?.length ?? 0;
 
   return (
-    <AppPage title={<PageTitle>Admin</PageTitle>} scrollKey="admin">
+    <AppPage title={<PageTitle>Administración</PageTitle>} scrollKey="admin">
       <div className="grid gap-4 pb-10">
         <div className="grid grid-cols-3 gap-3 max-md:gap-2">
           <StatCard
             icon={<Users />}
-            label="People"
+            label="Personas"
             value={stats.data?.totalUsers}
             failed={stats.isError}
             caption={
-              waitingCount ? `${waitingCount} waiting` : "No one waiting"
+              waitingCount ? `${waitingCount} en espera` : "Nadie en espera"
             }
           />
           <StatCard
             icon={<NotebookPen />}
-            label="Notes"
+            label="Notas"
             value={stats.data?.totalNotes}
             failed={stats.isError}
-            caption="Including trash"
+            caption="Incluye papelera"
           />
           <StatCard
             icon={<Hash />}
-            label="Tags"
+            label="Etiquetas"
             value={stats.data?.totalTags}
             failed={stats.isError}
-            caption="Across all people"
+            caption="En todas las personas"
           />
         </div>
         {((stats.isError && !stats.data) || statsRetry.isRetrying) && (
           <LoadFailedRow
-            message="Couldn’t load the counts."
+            message="No se pudieron cargar los totales."
             onRetry={statsRetry.retry}
             isRetrying={statsRetry.isRetrying}
           />
         )}
         <Tabs
-          aria-label="Admin"
+          aria-label="Administración"
           panelId="admin-panel"
           value={tab}
           onValueChange={setTab}
@@ -84,17 +84,17 @@ function AdminPageContent() {
               value: "people",
               label: (
                 <>
-                  People
+                  Personas
                   {waitingCount > 0 && (
                     <Badge tone="warn">
                       {waitingCount}
-                      <span className="sr-only"> waiting</span>
+                      <span className="sr-only"> en espera</span>
                     </Badge>
                   )}
                 </>
               ),
             },
-            { value: "signin", label: "Sign-in" },
+            { value: "signin", label: "Inicio de sesión" },
           ]}
         />
         <TabPanel id="admin-panel" labelledBy={`admin-panel-tab-${tab}`}>

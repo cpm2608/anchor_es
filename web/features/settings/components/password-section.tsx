@@ -30,21 +30,21 @@ export function PasswordSection() {
     onSuccess: () => {
       setCurrentPassword("");
       setNewPassword("");
-      toast.success("Password changed");
+      toast.success("Contraseña cambiada");
     },
     onError: (e: Error) => {
       const status = e instanceof HTTPError ? e.response.status : 0;
       if (status === 403)
-        setCurrentPasswordError("That isn’t your current password.");
+        setCurrentPasswordError("Esa no es tu contraseña actual.");
       else if (status === 400 && /different/i.test(e.message))
         setNewPasswordError(
-          "Use a password that’s different from your current one.",
+          "Usa una contraseña diferente a la actual.",
         );
       else
         setFormError(
           status
-            ? "Couldn’t change the password. Try again in a moment."
-            : "Couldn’t reach the server. Check your connection and try again.",
+            ? "No se pudo cambiar la contraseña. Inténtalo de nuevo."
+            : "No se pudo conectar con el servidor. Comprueba tu conexión e inténtalo de nuevo.",
         );
     },
   });
@@ -52,13 +52,13 @@ export function PasswordSection() {
   const isProviderOnly =
     !!oidc.data?.enabled && !!oidc.data?.disableInternalAuth;
   if (user?.hasPassword === false || isProviderOnly) {
-    const providerName = oidc.data?.providerName || "your sign-in provider";
+    const providerName = oidc.data?.providerName || "tu proveedor de inicio de sesión";
     return (
-      <Section id="password" title="Password">
+      <Section id="password" title="Contraseña">
         <Row>
           <RowText
-            title={`Your password is managed by ${providerName}`}
-            text={`Change it in ${providerName}.`}
+            title={`Tu contraseña es gestionada por ${providerName}`}
+            text={`Cámbiala en ${providerName}.`}
           />
         </Row>
       </Section>

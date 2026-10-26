@@ -55,7 +55,7 @@ export default function ArchivePage() {
     try {
       await run();
     } catch {
-      toast.error("Couldn’t undo that");
+      toast.error("No se pudo deshacer la acción");
     }
     refresh();
   };
@@ -86,8 +86,8 @@ export default function ArchivePage() {
       if (kind === "unarchive") {
         toast.success(
           ids.length === 1
-            ? "Note unarchived"
-            : `${plural(ids.length, "note")} unarchived`,
+            ? "Nota desarchivada"
+            : `${ids.length} notas desarchivadas`,
           {
             undo: () => undo(() => bulkArchiveNotes(ids)),
           },
@@ -102,20 +102,22 @@ export default function ArchivePage() {
           : undefined,
       );
     },
-    onError: (_, variables) =>
+    onError: (_, variables) => {
+      const verb = variables.kind === "unarchive" ? "desarchivar" : "eliminar";
       toast.error(
-        `Couldn’t ${variables.kind === "unarchive" ? "unarchive" : "delete"} ${variables.ids.length === 1 ? "note" : "notes"}`,
+        `No se pudo ${verb} ${variables.ids.length === 1 ? "la nota" : "las notas"}`,
         { retry: () => noteAction.mutate(variables) },
-      ),
+      );
+    },
   });
 
   const mutateNotes = noteAction.mutate;
   const renderActions = React.useCallback(
     (note: Note) => (
-      <Tip label="Unarchive">
+      <Tip label="Desarchivar">
         <IconButton
           size="sm"
-          label="Unarchive"
+          label="Desarchivar"
           onClick={() => mutateNotes({ kind: "unarchive", ids: [note.id] })}
         >
           <ArchiveRestore />
@@ -214,13 +216,13 @@ export default function ArchivePage() {
       <ConfirmationDialog
         open={!!confirmRemove}
         onOpenChange={(open) => !open && setConfirmRemove(null)}
-        title={`Delete ${plural(removeCount, "note")}?`}
+        title={`¿Eliminar ${removeCount === 1 ? "la nota" : `las ${removeCount} notas`}?`}
         description={deleteNotesWarning(
           removeCount - removeSharedCount,
           removeSharedCount,
         )}
-        confirmLabel="Delete"
-        busyLabel="Deleting…"
+        confirmLabel="Eliminar"
+        busyLabel="Eliminando…"
         isPending={noteAction.isPending}
         onConfirm={() =>
           confirmRemove &&

@@ -16,16 +16,15 @@ export function daysUntilDeletion(note: Note, now = new Date()): number {
 }
 
 export function deletedNotesText(ownedCount: number, sharedCount: number) {
-  if (!sharedCount) return `${plural(ownedCount, "note")} moved to trash`;
+  if (!sharedCount) return `${ownedCount === 1 ? "Nota enviada" : `${ownedCount} notas enviadas`} a la papelera`;
   if (!ownedCount)
-    return `${plural(sharedCount, "note")} removed from your notes`;
-  return `${plural(ownedCount, "note")} moved to trash. ${sharedCount} removed from your notes.`;
+    return `${sharedCount === 1 ? "Nota quitada" : `${sharedCount} notas quitadas`} de tus notas`;
+  return `${ownedCount === 1 ? "Nota enviada" : `${ownedCount} notas enviadas`} a la papelera. ${sharedCount} ${sharedCount === 1 ? "quitada" : "quitadas"} de tus notas.`;
 }
 
 export function deleteNotesWarning(ownedCount: number, sharedCount: number) {
-  const them = sharedCount === 1 ? "it" : "them";
-  const sharedText = `${plural(sharedCount, "note")} shared with you will be removed from your notes. To see ${them} again, the owner has to share ${them} with you again.`;
+  const sharedText = `${sharedCount === 1 ? "La nota compartida" : `Las ${sharedCount} notas compartidas`} contigo se quitarán de tus notas. Para volver a verlas, el propietario tendrá que compartirlas de nuevo.`;
   return ownedCount
-    ? `${plural(ownedCount, "note")} will be moved to trash. ${sharedText}`
+    ? `${ownedCount === 1 ? "La nota" : `Las ${ownedCount} notas`} se enviarán a la papelera. ${sharedText}`
     : sharedText;
 }

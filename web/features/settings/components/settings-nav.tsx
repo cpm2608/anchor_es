@@ -83,7 +83,7 @@ export function SettingsNav() {
   return (
     <nav
       data-settings-nav
-      aria-label="Settings sections"
+      aria-label="Secciones de ajustes"
       className="sticky top-20 isolate grid gap-px max-md:static max-md:-mx-gutter-phone max-md:flex max-md:gap-1.5 max-md:overflow-x-auto max-md:px-gutter-phone max-md:scrollbar-none"
     >
       {SECTIONS.map((section) => (

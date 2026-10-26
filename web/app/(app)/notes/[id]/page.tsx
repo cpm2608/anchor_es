@@ -128,7 +128,7 @@ function NoteEditor({
       ]);
       queryClient.invalidateQueries({ queryKey: ["tags"] });
     },
-    onError: () => toast.error("Couldn’t create tag"),
+    onError: () => toast.error("No se pudo crear la etiqueta"),
   });
 
   const showHistory = (open: boolean) => {
@@ -321,10 +321,10 @@ function NoteEditor({
       <ConfirmationDialog
         open={actions.confirmLeaveShare}
         onOpenChange={actions.setConfirmLeaveShare}
-        title="Remove this note from your notes?"
-        description="To see it again, its owner has to share it with you again."
-        confirmLabel="Remove"
-        busyLabel="Removing…"
+        title="¿Quitar esta nota de tus notas?"
+        description="Para volver a verla, su propietario tendrá que compartirla contigo otra vez."
+        confirmLabel="Quitar"
+        busyLabel="Quitando…"
         isPending={actions.isLeavingShare}
         onConfirm={actions.leaveShare}
       />

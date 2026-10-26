@@ -67,13 +67,13 @@ export function ApiTokenSection() {
       setConfirming(null);
       toast.success(
         token
-          ? "API token regenerated. Update it in your apps."
-          : "API token generated",
+          ? "Token de API regenerado. Actualízalo en tus aplicaciones."
+          : "Token de API generado",
       );
     },
     onError: () =>
       toast.error(
-        token ? "Couldn’t regenerate the token" : "Couldn’t generate a token",
+        token ? "No se pudo regenerar el token" : "No se pudo generar un token",
         { retry: () => generate.mutate() },
       ),
   });
@@ -83,10 +83,10 @@ export function ApiTokenSection() {
       queryClient.setQueryData(["api-token"], res);
       setShown(false);
       setConfirming(null);
-      toast.success("API token revoked");
+      toast.success("Token de API revocado");
     },
     onError: () =>
-      toast.error("Couldn’t revoke the token", {
+      toast.error("No se pudo revocar el token", {
         retry: () => revoke.mutate(),
       }),
   });
@@ -94,22 +94,22 @@ export function ApiTokenSection() {
   const copy = () => {
     if (!token) return;
     copyText(token).then(
-      () => toast.success("Token copied"),
-      () => toast.error("Couldn’t copy the token"),
+      () => toast.success("Token copiado"),
+      () => toast.error("No se pudo copiar el token"),
     );
   };
 
   return (
     <Section
       id="token"
-      title="API token"
-      description="Lets other apps read your notes."
+      title="Token de API"
+      description="Permite que otras aplicaciones lean tus notas."
     >
       {tokenQuery.isError || tokenRetry.isRetrying ? (
         <Row>
           <LoadFailedRow
             className="flex-1"
-            message="Couldn’t load your token."
+            message="No se pudo cargar tu token."
             onRetry={tokenRetry.retry}
             isRetrying={tokenRetry.isRetrying}
           />
@@ -125,26 +125,26 @@ export function ApiTokenSection() {
             ref={tokenField}
             readOnly
             mono
-            aria-label="API token"
+            aria-label="Token de API"
             value={value ?? ""}
             icon={<KeyRound aria-hidden />}
             end={
               <span className="-mr-1.5 flex gap-0.5">
-                <Tip label={shown ? "Hide token" : "Show token"}>
+                <Tip label={shown ? "Ocultar token" : "Mostrar token"}>
                   <button
                     ref={eyeButton}
                     type="button"
-                    aria-label={shown ? "Hide token" : "Show token"}
+                    aria-label={shown ? "Ocultar token" : "Mostrar token"}
                     onClick={() => setShown((s) => !s)}
                     className="grid size-7 cursor-pointer place-items-center rounded-sm border-0 bg-transparent text-muted-foreground hover:bg-foreground/6 hover:text-foreground [&_svg]:size-4"
                   >
                     {shown ? <EyeOff aria-hidden /> : <Eye aria-hidden />}
                   </button>
                 </Tip>
-                <Tip label="Copy token">
+                <Tip label="Copiar token">
                   <button
                     type="button"
-                    aria-label="Copy token"
+                    aria-label="Copiar token"
                     onClick={copy}
                     className="grid size-7 cursor-pointer place-items-center rounded-sm border-0 bg-transparent text-muted-foreground hover:bg-foreground/6 hover:text-foreground [&_svg]:size-4"
                   >
@@ -155,8 +155,7 @@ export function ApiTokenSection() {
             }
           />
           <FieldDescription>
-            Anyone with this token can read your notes. If it leaks, regenerate
-            it.
+            Cualquiera con este token puede leer tus notas. Si se filtra, regenéralo.
           </FieldDescription>
           <div className="flex flex-wrap items-center gap-2">
             <Button
@@ -164,37 +163,37 @@ export function ApiTokenSection() {
               onClick={() => setConfirming("regenerate")}
             >
               <RotateCw aria-hidden />
-              Regenerate
+              Regenerar
             </Button>
             <Button variant="danger" onClick={() => setConfirming("revoke")}>
-              Revoke
+              Revocar
             </Button>
           </div>
         </Row>
       ) : (
         <Row>
           <RowText
-            title="No token"
-            text="Generate one when an app asks for it."
+            title="Sin token"
+            text="Genera uno cuando una aplicación te lo pida."
           />
           <Button
             id={generateButtonId}
             variant="secondary"
             onClick={() => generate.mutate()}
-            busy={generate.isPending && "Generating…"}
+            busy={generate.isPending && "Generando…"}
           >
             <KeyRound aria-hidden />
-            Generate token
+            Generar token
           </Button>
         </Row>
       )}
       <ConfirmationDialog
         open={confirming === "regenerate"}
         onOpenChange={(open) => !open && setConfirming(null)}
-        title="Regenerate the API token?"
-        description="The current token will stop working right away. Apps that use it will need the new one."
-        confirmLabel="Regenerate"
-        busyLabel="Regenerating…"
+        title="¿Regenerar el token de API?"
+        description="El token actual dejará de funcionar de inmediato. Las aplicaciones que lo usen necesitarán el nuevo."
+        confirmLabel="Regenerar"
+        busyLabel="Regenerando…"
         variant="primary"
         isPending={generate.isPending}
         onConfirm={() => generate.mutate()}
@@ -202,10 +201,10 @@ export function ApiTokenSection() {
       <ConfirmationDialog
         open={confirming === "revoke"}
         onOpenChange={(open) => !open && setConfirming(null)}
-        title="Revoke the API token?"
-        description="Apps that use it will lose access to your notes. You can generate a new token at any time."
-        confirmLabel="Revoke"
-        busyLabel="Revoking…"
+        title="¿Revocar el token de API?"
+        description="Las aplicaciones que lo utilicen perderán acceso a tus notas. Puedes generar un nuevo token en cualquier momento."
+        confirmLabel="Revocar"
+        busyLabel="Revocando…"
         variant="destructive"
         isPending={revoke.isPending}
         onConfirm={() => revoke.mutate()}

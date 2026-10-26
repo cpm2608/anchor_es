@@ -33,7 +33,7 @@ import type { AdminUser } from "../types";
 
 const isEmailTaken = (error: Error) =>
   error instanceof HTTPError && error.response.status === 409;
-const EMAIL_TAKEN = "An account with this email already exists.";
+const EMAIL_TAKEN = "Ya existe una cuenta con este correo electrónico.";
 
 const couldWorkLater = (error: Error) =>
   !(error instanceof HTTPError) || error.response.status >= 500;
@@ -73,7 +73,7 @@ export function AddPersonDialog({
     onSuccess: (user) => {
       onDone();
       onOpenChange(false);
-      toast.success(`${firstName(user.name)} can sign in now`);
+      toast.success(`${firstName(user.name)} ya puede iniciar sesión`);
     },
     onError: (e: Error, dto) => {
       const field = refusedField(e);
@@ -81,7 +81,7 @@ export function AddPersonDialog({
       else if (field) showError(field, ACCOUNT_FIELD_HELP[field]);
       else
         toast.error(
-          `Couldn’t add ${firstName(dto.name)}`,
+          `No se pudo añadir a ${firstName(dto.name)}`,
           couldWorkLater(e) ? { retry: () => create.mutate(dto) } : undefined,
         );
     },
@@ -101,18 +101,18 @@ export function AddPersonDialog({
           className="contents"
           onSubmit={(e) => {
             e.preventDefault();
-            if (!name.trim()) return showError("name", "Enter their name.");
+            if (!name.trim()) return showError("name", "Introduce su nombre.");
             create.mutate({ name: name.trim(), email: email.trim(), password });
           }}
         >
           <DialogHeader>
-            <DialogTitle>Add a person</DialogTitle>
+            <DialogTitle>Añadir una persona</DialogTitle>
             <DialogDescription>
-              They can sign in right away and change their password in Settings.
+              Podrá iniciar sesión de inmediato y cambiar su contraseña en Ajustes.
             </DialogDescription>
           </DialogHeader>
           <DialogBody>
-            <Field label="Name" error={errors.name}>
+            <Field label="Nombre" error={errors.name}>
               <Input
                 ref={refs.name}
                 value={name}
@@ -121,11 +121,11 @@ export function AddPersonDialog({
                   setName(e.target.value);
                   setErrors((prev) => ({ ...prev, name: undefined }));
                 }}
-                placeholder="Their name"
+                placeholder="Su nombre"
                 autoFocus
               />
             </Field>
-            <Field label="Email" error={errors.email}>
+            <Field label="Correo electrónico" error={errors.email}>
               <Input
                 ref={refs.email}
                 type="email"
@@ -134,11 +134,11 @@ export function AddPersonDialog({
                   setEmail(e.target.value);
                   setErrors((prev) => ({ ...prev, email: undefined }));
                 }}
-                placeholder="name@example.com"
+                placeholder="nombre@ejemplo.com"
                 required
               />
             </Field>
-            <Field label="Password" error={errors.password}>
+            <Field label="Contraseña" error={errors.password}>
               <Input
                 ref={refs.password}
                 mono
@@ -147,12 +147,12 @@ export function AddPersonDialog({
                   setPassword(e.target.value);
                   setErrors((prev) => ({ ...prev, password: undefined }));
                 }}
-                placeholder="At least 8 characters"
+                placeholder="Al menos 8 caracteres"
                 minLength={8}
                 required
                 end={
                   <InputButton onClick={() => setPassword(makePassword())}>
-                    Generate
+                    Generar
                   </InputButton>
                 }
               />
@@ -164,14 +164,14 @@ export function AddPersonDialog({
               variant="quiet"
               onClick={() => onOpenChange(false)}
             >
-              Cancel
+              Cancelar
             </Button>
             <Button
               type="submit"
               disabled={!email.trim() || password.length < 8}
-              busy={create.isPending && "Adding…"}
+              busy={create.isPending && "Añadiendo…"}
             >
-              Add person
+              Añadir persona
             </Button>
           </DialogFooter>
         </form>
@@ -223,7 +223,7 @@ export function EditPersonDialog({
         mergeUser({ name: updated.name, email: updated.email });
       onDone();
       onClose();
-      toast.success("Saved");
+      toast.success("Guardado");
     },
     onError: (e: Error) => {
       const field = refusedField(e);
@@ -232,7 +232,7 @@ export function EditPersonDialog({
         showError(field, ACCOUNT_FIELD_HELP[field]);
       else
         toast.error(
-          "Couldn’t save the changes",
+          "No se pudieron guardar los cambios",
           couldWorkLater(e) ? { retry: () => save.mutate() } : undefined,
         );
     },
@@ -244,15 +244,15 @@ export function EditPersonDialog({
           className="contents"
           onSubmit={(e) => {
             e.preventDefault();
-            if (!name.trim()) return showError("name", "Enter their name.");
+            if (!name.trim()) return showError("name", "Introduce su nombre.");
             save.mutate();
           }}
         >
           <DialogHeader>
-            <DialogTitle>Edit {shownUser?.name}</DialogTitle>
+            <DialogTitle>Editar {shownUser?.name}</DialogTitle>
           </DialogHeader>
           <DialogBody>
-            <Field label="Name" error={errors.name}>
+            <Field label="Nombre" error={errors.name}>
               <Input
                 ref={nameRef}
                 value={name}
@@ -263,7 +263,7 @@ export function EditPersonDialog({
                 }}
               />
             </Field>
-            <Field label="Email" error={errors.email}>
+            <Field label="Correo electrónico" error={errors.email}>
               <Input
                 ref={emailRef}
                 type="email"
@@ -278,12 +278,12 @@ export function EditPersonDialog({
             <div className="flex items-center gap-4 pt-1">
               <div className="grid flex-1 gap-0.5">
                 <label htmlFor="edit-admin" className="font-semibold text-ui">
-                  Admin
+                  Administrador
                 </label>
                 <span className="text-meta text-muted-foreground">
                   {isShownSelf
-                    ? "You can’t change your own role. Another admin can."
-                    : "Can add people and change sign-in settings."}
+                    ? "No puedes cambiar tu propio rol. Otro administrador puede hacerlo."
+                    : "Puede añadir personas y cambiar la configuración de inicio de sesión."}
                 </span>
               </div>
               <Switch
@@ -296,10 +296,10 @@ export function EditPersonDialog({
           </DialogBody>
           <DialogFooter>
             <Button type="button" variant="quiet" onClick={onClose}>
-              Cancel
+              Cancelar
             </Button>
-            <Button type="submit" busy={save.isPending && "Saving…"}>
-              Save
+            <Button type="submit" busy={save.isPending && "Guardando…"}>
+              Guardar
             </Button>
           </DialogFooter>
         </form>
@@ -324,16 +324,16 @@ export function NewPasswordDialog({
     <Dialog open={!!value} onOpenChange={(open) => !open && onClose()}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>New password for {name}</DialogTitle>
+          <DialogTitle>Nueva contraseña para {name}</DialogTitle>
           <DialogDescription>
-            Share it with {name} securely. It won’t be shown again.
+            Compártela con {name} de forma segura. No se volverá a mostrar.
           </DialogDescription>
         </DialogHeader>
         <DialogBody>
           <Input
             readOnly
             mono
-            aria-label={`New password for ${name}`}
+            aria-label={`Nueva contraseña para ${name}`}
             value={shown?.password ?? ""}
             icon={<KeyRound aria-hidden />}
             end={
@@ -341,17 +341,17 @@ export function NewPasswordDialog({
                 onClick={() =>
                   copyText(shown?.password ?? "").then(
                     () => setCopied(true),
-                    () => toast.error("Couldn’t copy the password"),
+                    () => toast.error("No se pudo copiar la contraseña"),
                   )
                 }
               >
-                {copied ? "Copied" : "Copy"}
+                {copied ? "Copiada" : "Copiar"}
               </InputButton>
             }
           />
         </DialogBody>
         <DialogFooter>
-          <Button onClick={onClose}>Done</Button>
+          <Button onClick={onClose}>Listo</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

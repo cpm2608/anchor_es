@@ -68,9 +68,9 @@ interface SidebarProps {
 }
 
 const PAGES = [
-  { href: "/notes", key: "sidebar.notes", defaultLabel: "Notes", icon: NotebookPen },
-  { href: "/archive", key: "sidebar.archive", defaultLabel: "Archive", icon: Archive },
-  { href: "/trash", key: "sidebar.trash", defaultLabel: "Trash", icon: Trash2 },
+  { href: "/notes", key: "sidebar.notes", defaultLabel: "Notas", icon: NotebookPen },
+  { href: "/archive", key: "sidebar.archive", defaultLabel: "Archivo", icon: Archive },
+  { href: "/trash", key: "sidebar.trash", defaultLabel: "Papelera", icon: Trash2 },
 ] as const;
 
 export function newNoteHref(pathname: string, tagId?: string | null) {
@@ -207,7 +207,7 @@ export function Sidebar({
     onSuccess: (saved) => updateCachedTag(saved.id, { version: saved.version }),
     onError: (_, { tag }, context) => {
       updateCachedTag(tag.id, { color: context?.previousColor });
-      toast.error(`Couldn’t change the color of #${tag.name}`);
+      toast.error(`No se pudo cambiar el color de #${tag.name}`);
     },
     onSettled: () => {
       if (queryClient.isMutating({ mutationKey: ["tag-color"] }) <= 1)
@@ -224,7 +224,7 @@ export function Sidebar({
       if (tagId === tag.id) router.push("/notes");
       setTagToDelete(null);
     },
-    onError: (_, tag) => toast.error(`Couldn’t delete #${tag.name}`),
+    onError: (_, tag) => toast.error(`No se pudo eliminar #${tag.name}`),
   });
 
   const root = React.useRef<HTMLElement>(null);
@@ -343,7 +343,7 @@ export function Sidebar({
         </Link>
       </Tip>
 
-      <nav aria-label="Pages" className="grid gap-px">
+      <nav aria-label="Páginas" className="grid gap-px">
         {PAGES.map(({ href, key, defaultLabel, icon: Icon }) => {
           const name = t(key) || defaultLabel;
           return (
@@ -391,21 +391,21 @@ export function Sidebar({
       </div>
 
       <nav
-        aria-label="Tags"
+        aria-label="Etiquetas"
         className="-mx-1 grid min-h-0 flex-1 content-start gap-px overflow-auto px-1 pb-2 scrollbar-none mask-[linear-gradient(#000_calc(100%-22px),transparent)]"
       >
         {tagsFailed && (
           <>
             <LoadFailedRow
-              message="Couldn’t load tags"
+              message="No se pudieron cargar las etiquetas"
               onRetry={() => tagsQuery.refetch()}
               isRetrying={tagsQuery.isFetching}
               className="mt-0.5 gap-2 py-2 pr-2 pl-[11.5px] group-data-narrow/sb:hidden [&>span]:min-w-fit"
             />
-            <Tip label="Couldn’t load tags. Try again" side="right">
+            <Tip label="No se pudieron cargar las etiquetas. Reintentar" side="right">
               <IconButton
                 size="sm"
-                label="Couldn’t load tags. Try again"
+                label="No se pudieron cargar las etiquetas. Reintentar"
                 aria-busy={tagsQuery.isFetching || undefined}
                 onClick={() => tagsQuery.refetch()}
                 className="hidden justify-self-center group-data-narrow/sb:inline-grid"
@@ -706,7 +706,7 @@ function AccountMenu({
         side={opensRight ? "right" : "top"}
         align={opensRight ? "end" : "start"}
         className="w-64"
-        aria-label="Account"
+        aria-label="Cuenta"
       >
         <div className="mb-1 flex items-center gap-2.5 rounded-lg bg-foreground/4 p-2.5">
           <Avatar id={user.id} name={user.name} src={user.profileImage} />
@@ -743,9 +743,9 @@ function AccountMenu({
 }
 
 const THEMES = [
-  { value: "light", label: "Light", icon: Sun },
-  { value: "dark", label: "Dark", icon: Moon },
-  { value: "system", label: "Match system", icon: Monitor },
+  { value: "light", label: "Claro", icon: Sun },
+  { value: "dark", label: "Oscuro", icon: Moon },
+  { value: "system", label: "Automático", icon: Monitor },
 ] as const;
 
 const themeItemClass =
@@ -776,7 +776,7 @@ function ThemeChoices({
 
   return (
     <div className="flex items-center justify-between gap-3 py-1 pr-1 pl-2.5 text-ui">
-      <span id={labelId}>Theme</span>
+      <span id={labelId}>Tema</span>
       <MenuPrimitive.RadioGroup
         ref={root}
         data-slot="segmented-control"

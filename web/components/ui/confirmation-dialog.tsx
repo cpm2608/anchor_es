@@ -34,7 +34,7 @@ export function ConfirmationDialog({
   description,
   confirmLabel,
   busyLabel,
-  cancelLabel = "Cancel",
+  cancelLabel = "Cancelar",
   variant = "destructive",
   isPending = false,
   fallbackFocus,

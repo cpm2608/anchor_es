@@ -229,10 +229,10 @@ export const SearchField = React.forwardRef<
           className="h-full min-w-0 flex-1 border-0 bg-transparent p-0 text-foreground text-ui outline-none placeholder:text-muted-foreground focus-visible:outline-none [&::-webkit-search-cancel-button]:hidden"
         />
         {value ? (
-          <Tip label="Clear search">
+          <Tip label="Borrar búsqueda">
             <button
               type="button"
-              aria-label="Clear search"
+              aria-label="Borrar búsqueda"
               onClick={() => {
                 onChange("");
                 input.current?.focus();
@@ -249,7 +249,7 @@ export const SearchField = React.forwardRef<
         )}
       </label>
       <IconButton
-        label="Search"
+        label="Buscar"
         className="hidden max-md:inline-grid"
         onClick={() => {
           setOpen(true);

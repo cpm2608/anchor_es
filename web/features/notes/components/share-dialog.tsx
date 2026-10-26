@@ -59,14 +59,14 @@ const ACCESS: Record<
   { label: string; icon: React.ReactNode; description: string }
 > = {
   viewer: {
-    label: "Can view",
+    label: "Puede ver",
     icon: <Eye />,
-    description: "Can read the note",
+    description: "Puede leer la nota",
   },
   editor: {
-    label: "Can edit",
+    label: "Puede editar",
     icon: <Pencil />,
-    description: "Can change the text and pictures",
+    description: "Puede modificar el texto y las imágenes",
   },
 };
 
@@ -136,10 +136,10 @@ export function ShareDialog({
       ]);
       setAddedShareId(share.id);
       refresh();
-      toast.success(`Shared with ${firstName(user.name)}`);
+      toast.success(`Compartido con ${firstName(user.name)}`);
     },
     onError: (_e, user) =>
-      toast.error(`Couldn’t share with ${firstName(user.name)}`),
+      toast.error(`No se pudo compartir con ${firstName(user.name)}`),
   });
 
   const changeAccess = useMutation({
@@ -158,13 +158,13 @@ export function ShareDialog({
     onSuccess: (_s, { share, permission }) => {
       refresh();
       toast.success(
-        `${firstName(share.sharedWithUser.name)} ${permission === "editor" ? "can now edit" : "can now view"}`,
+        `${firstName(share.sharedWithUser.name)} ${permission === "editor" ? "ahora puede editar" : "ahora puede ver"}`,
       );
     },
     onError: (_e, { share }) => {
       refresh();
       toast.error(
-        `Couldn’t change access for ${firstName(share.sharedWithUser.name)}`,
+        `No se pudo cambiar el acceso de ${firstName(share.sharedWithUser.name)}`,
       );
     },
   });
@@ -172,7 +172,7 @@ export function ShareDialog({
   const removeAccess = (share: NoteShare) => {
     const name = firstName(share.sharedWithUser.name);
     setPending(share.id, true);
-    toast.success(`${name} no longer has access`, {
+    toast.success(`${name} ya no tiene acceso`, {
       undo: () => setPending(share.id, false),
       onClose: () => {
         revokeShare(noteId, share.id).then(
@@ -185,7 +185,7 @@ export function ShareDialog({
           },
           () => {
             setPending(share.id, false);
-            toast.error(`Couldn’t remove access for ${name}`);
+            toast.error(`No se pudo quitar el acceso de ${name}`);
           },
         );
       },
@@ -203,7 +203,7 @@ export function ShareDialog({
       >
         <DialogHeader>
           <DialogTitle>
-            {title?.trim() ? `Share “${title}”` : "Share note"}
+            {title?.trim() ? `Compartir “${title}”` : "Compartir nota"}
           </DialogTitle>
         </DialogHeader>
         <DialogBody className="gap-3.5">
@@ -222,7 +222,7 @@ export function ShareDialog({
             onPick={(user) => addPerson.mutate(user)}
           />
           <div className="mt-1.5 -mb-0.5 text-label text-muted-foreground uppercase">
-            People with access
+            Personas con acceso
           </div>
           <div className="-mx-2 grid gap-0.5">
             {me && (
@@ -234,7 +234,7 @@ export function ShareDialog({
                 src={me.profileImage}
               >
                 <span className="pr-2 text-meta text-muted-foreground">
-                  Owner
+                  Propietario
                 </span>
               </Person>
             )}
@@ -245,7 +245,7 @@ export function ShareDialog({
               />
             ) : isLoadingError ? (
               <LoadFailedRow
-                message="Couldn’t load the people with access."
+                message="No se pudieron cargar las personas con acceso."
                 onRetry={() => void refetch()}
                 isRetrying={isFetching}
                 className="mx-2 mt-1"
@@ -275,9 +275,9 @@ export function ShareDialog({
         <DialogFooter className="justify-between">
           <span className="flex items-center gap-2 text-meta text-muted-foreground [&_svg]:size-3.75">
             <Lock aria-hidden />
-            Only people you add can open it.
+            Solo las personas que añadas pueden verla.
           </span>
-          <Button onClick={() => onOpenChange(false)}>Done</Button>
+          <Button onClick={() => onOpenChange(false)}>Listo</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
@@ -312,7 +312,7 @@ function Person({
       <span className="grid min-w-0 flex-1 leading-[1.3]">
         <b className="truncate font-semibold text-ui">
           {name}
-          {you && " (you)"}
+          {you && " (tú)"}
         </b>
         <small className="truncate text-muted-foreground text-small">
           {email}
@@ -346,7 +346,7 @@ function AccessMenu({
       <DropdownMenuContent
         align="end"
         className="w-61"
-        aria-label={`Access for ${share.sharedWithUser.name}`}
+        aria-label={`Acceso para ${share.sharedWithUser.name}`}
       >
         <MenuPrimitive.RadioGroup
           value={share.permission}
@@ -376,7 +376,7 @@ function AccessMenu({
         <DropdownMenuSeparator />
         <DropdownMenuItem tone="danger" onSelect={onRemove}>
           <UserMinus />
-          Remove access
+          Quitar acceso
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
@@ -465,14 +465,14 @@ function PeopleSearch({
           )
         }
         role="combobox"
-        aria-label="Add people by name or email"
+        aria-label="Añadir personas por nombre o correo"
         aria-expanded={listShown}
         aria-controls={listId}
         aria-autocomplete="list"
         aria-activedescendant={
           listShown && options.length ? `${listId}-${highlighted}` : undefined
         }
-        placeholder="Add people by name or email"
+        placeholder="Añadir personas por nombre o correo"
         autoComplete="off"
         value={query}
         boxClassName="h-10.5"
@@ -507,20 +507,19 @@ function PeopleSearch({
         <div
           role="listbox"
           id={listId}
-          aria-label="People"
+          aria-label="Personas"
           className="absolute inset-x-0 top-[calc(100%+6px)] z-(--z-popover) grid max-h-70 gap-px overflow-auto rounded-popover bg-card p-1.5 shadow-[inset_0_0_0_1px_color-mix(in_srgb,var(--border)_70%,transparent),var(--sh-menu)] animate-pop-in"
           onMouseDown={(e) => e.preventDefault()}
         >
           {noMatches ? (
             <div className="px-2.5 py-3.5 text-center text-control text-muted-foreground">
-              No one found for “{term}”. You can only share with people who have
-              an account on this server.
+              No se encontró a nadie para «{term}». Solo puedes compartir con personas que tengan una cuenta en este servidor.
             </div>
           ) : (
             <>
               {!hasTerm && (
                 <div className="px-2.5 pt-2 pb-1 text-label text-muted-foreground uppercase">
-                  Recently shared with
+                  Compartido recientemente con
                 </div>
               )}
               {options.map((user, i) => (

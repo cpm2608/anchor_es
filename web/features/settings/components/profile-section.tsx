@@ -22,11 +22,11 @@ const PICTURE_TYPES = ["image/jpeg", "image/png", "image/webp"];
 
 function pictureUploadError(error: Error) {
   if (!(error instanceof HTTPError))
-    return "Couldn’t upload the picture. Check your connection.";
+    return "No se pudo subir la foto. Comprueba tu conexión.";
   const { status } = error.response;
   if (status === 413 || (status === 400 && /file size/i.test(error.message)))
-    return "Couldn’t upload the picture. It’s too big.";
-  return "Couldn’t upload the picture.";
+    return "No se pudo subir la foto. Es demasiado grande.";
+  return "No se pudo subir la foto.";
 }
 
 type PictureRemoval = { picture: string; isCanceled: boolean; isSent: boolean };
@@ -48,7 +48,7 @@ function sendRemoval(removal: PictureRemoval) {
       removal.isSent = false;
       if (removal.isCanceled) return;
       showPicture(removal.picture);
-      toast.error("Couldn’t remove the profile picture", {
+      toast.error("No se pudo quitar la foto de perfil", {
         retry: () => {
           if (removal.isCanceled) return;
           showPicture();
@@ -74,7 +74,7 @@ function useProfilePicture() {
     onSuccess: async (updated) => {
       if (updated.profileImage) await preloadPhoto(updated.profileImage);
       applyUser(updated);
-      toast.success("Profile picture updated");
+      toast.success("Foto de perfil actualizada");
     },
     onError: (e: Error, _file, replaced) => {
       if (replaced) showPicture(replaced.picture);
@@ -86,7 +86,7 @@ function useProfilePicture() {
     const removal = { picture, isCanceled: false, isSent: false };
     removalRef.current = removal;
     showPicture();
-    toast.success("Profile picture removed", {
+    toast.success("Foto de perfil eliminada", {
       undo: () => {
         removal.isCanceled = true;
         showPicture(picture);

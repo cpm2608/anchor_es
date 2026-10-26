@@ -45,7 +45,7 @@ export function SignInTab({ hidden }: { hidden?: boolean }) {
     },
     onError: (_, mode, context) => {
       queryClient.setQueryData(adminKeys.registration, context?.before);
-      toast.error("Couldn’t change who can sign up", {
+      toast.error("No se pudo cambiar quién puede registrarse", {
         retry: () => saveMode.mutate(mode),
       });
     },
@@ -56,20 +56,19 @@ export function SignInTab({ hidden }: { hidden?: boolean }) {
     <div hidden={hidden} className="grid max-w-180 gap-6.5">
       <section className="grid gap-2.5">
         <SectionHeader
-          title="Who can sign up"
-          description="Choose who can create an account."
+          title="Quién puede registrarse"
+          description="Elige quién puede crear una cuenta."
           saved={<SaveStatus state={registrationSaveState} />}
         />
         {locked && (
           <LockNote>
-            Set by <code>USER_SIGNUP</code> on the server. Remove it there to
-            change it here.
+            Definido por <code>USER_SIGNUP</code> en el servidor. Quítalo allí para cambiarlo aquí.
           </LockNote>
         )}
         {(registration.isError && !registration.data) ||
         registrationRetry.isRetrying ? (
           <LoadFailedRow
-            message="Couldn’t load who can sign up."
+            message="No se pudo cargar la configuración de registro."
             onRetry={registrationRetry.retry}
             isRetrying={registrationRetry.isRetrying}
           />
@@ -77,30 +76,30 @@ export function SignInTab({ hidden }: { hidden?: boolean }) {
           <Skeleton className="h-22 w-full rounded-xl" />
         ) : (
           <RadioCards
-            aria-label="Who can sign up"
+            aria-label="Quién puede registrarse"
             value={registration.data?.mode ?? "enabled"}
             onValueChange={(mode) => saveMode.mutate(mode)}
             className="grid-cols-3 max-md:grid-cols-1"
             options={[
               {
                 value: "enabled",
-                label: "Open",
+                label: "Abierto",
                 icon: <DoorOpen />,
-                description: "Anyone can create an account.",
+                description: "Cualquiera puede crear una cuenta.",
                 disabled: locked,
               },
               {
                 value: "review",
-                label: "Needs approval",
+                label: "Requiere aprobación",
                 icon: <UserCheck />,
-                description: "New accounts need an admin’s approval.",
+                description: "Las cuentas nuevas requieren la aprobación de un administrador.",
                 disabled: locked,
               },
               {
                 value: "disabled",
-                label: "Closed",
+                label: "Cerrado",
                 icon: <Lock />,
-                description: "Only admins can add people.",
+                description: "Solo los administradores pueden añadir personas.",
                 disabled: locked,
               },
             ]}

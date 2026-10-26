@@ -22,7 +22,7 @@ import { bulkAddTagsToNotes, saveNote } from "../api";
 import type { Note } from "../types";
 
 const tagIdsOf = (n: Note) => n.tagIds ?? [];
-const noteCount = (n: number) => `${n} ${n === 1 ? "note" : "notes"}`;
+const noteCount = (n: number) => `${n} ${n === 1 ? "nota" : "notas"}`;
 const sameTags = (a: string[], b: string[]) =>
   a.length === b.length && a.every((id) => b.includes(id));
 
@@ -136,7 +136,7 @@ export function BulkTagPicker({ anchor, notes, onClose }: BulkTagPickerProps) {
           updateCachedNotes(
             new Map(ids.map((id) => [id, tagging.tagsNow.get(id) ?? []])),
           );
-          toast.error("Couldn’t update tags", {
+          toast.error("No se pudieron actualizar las etiquetas", {
             retry: () => apply(tag, add, ids),
           });
         },
@@ -168,7 +168,7 @@ export function BulkTagPicker({ anchor, notes, onClose }: BulkTagPickerProps) {
       if (result.status !== "saved") throw new Error("not saved");
     }).then(refresh, () => {
       refresh();
-      toast.error("Couldn’t undo that");
+      toast.error("No se pudo deshacer la acción");
     });
   };
 
@@ -177,7 +177,7 @@ export function BulkTagPicker({ anchor, notes, onClose }: BulkTagPickerProps) {
       ([id, tagIds]) => !sameTags(tagIds, tagsAtStart.get(id) ?? []),
     );
     if (hasChanged)
-      toast.success(`Tags updated on ${noteCount(tagsAtStart.size)}`, {
+      toast.success(`Etiquetas actualizadas en ${noteCount(tagsAtStart.size)}`, {
         undo: () => undoAll(tagsAtStart),
       });
   };
@@ -246,7 +246,7 @@ export function BulkTagPicker({ anchor, notes, onClose }: BulkTagPickerProps) {
               );
               return tag;
             } catch {
-              toast.error(`Couldn’t create #${name}`);
+              toast.error(`No se pudo crear #${name}`);
               return undefined;
             }
           }}
